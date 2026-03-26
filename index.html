@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Armstrong Garden Care — Quote Tool</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root {
     --green: #95c03d;
@@ -21,123 +20,36 @@
     --red-light: #fde8ea;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
     --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
     --radius: 12px;
     --radius-sm: 8px;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ─────────────────────────────────── */
-  .header {
-    background: var(--white);
-    border-bottom: 3px solid var(--green);
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-brand h1 {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: var(--dark);
-    text-transform: uppercase;
-  }
-  .header-brand p {
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-    margin-top: 1px;
-  }
-  .admin-toggle {
-    width: 36px; height: 36px;
-    border: none; background: var(--bg);
-    border-radius: 50%; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; color: var(--text-muted);
-    transition: all 0.2s;
-  }
+  .header { background: var(--white); border-bottom: 3px solid var(--green); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header-brand h1 { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--dark); text-transform: uppercase; }
+  .header-brand p { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 1px; }
+  .admin-toggle { width: 36px; height: 36px; border: none; background: var(--bg); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-muted); transition: all 0.2s; }
   .admin-toggle:hover { background: var(--green-light); color: var(--green-dark); }
   .admin-toggle.active { background: var(--green); color: var(--white); }
 
-  /* ── ADMIN PANEL ────────────────────────────── */
-  .admin-panel {
-    max-height: 0; overflow: hidden;
-    background: #fafafa; border-bottom: 1px solid var(--border);
-    transition: max-height 0.3s ease;
-  }
+  .admin-panel { max-height: 0; overflow: hidden; background: #fafafa; border-bottom: 1px solid var(--border); transition: max-height 0.3s ease; }
   .admin-panel.open { max-height: 600px; }
-  .admin-inner {
-    padding: 20px 24px;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-  }
-  .admin-inner h3 {
-    grid-column: 1 / -1;
-    font-size: 13px; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--text-muted);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 8px;
-  }
-  .admin-field label {
-    display: block; font-size: 12px;
-    color: var(--text-light); margin-bottom: 4px;
-  }
-  .admin-field input {
-    width: 100%; padding: 8px 10px;
-    border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 14px;
-  }
-  .admin-actions {
-    grid-column: 1 / -1;
-    display: flex; gap: 10px; align-items: center;
-  }
-  .admin-actions button {
-    padding: 8px 20px; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    border: none; transition: all 0.2s;
-  }
+  .admin-inner { padding: 20px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .admin-inner h3 { grid-column: 1 / -1; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .admin-field label { display: block; font-size: 12px; color: var(--text-light); margin-bottom: 4px; }
+  .admin-field input { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; }
+  .admin-actions { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; }
+  .admin-actions button { padding: 8px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
   .btn-save { background: var(--green); color: var(--white); }
   .btn-save:hover { background: var(--green-dark); }
   .btn-reset { background: var(--bg); color: var(--text-light); border: 1px solid var(--border) !important; }
-  .saved-msg {
-    font-size: 12px; color: var(--green-dark);
-    opacity: 0; transition: opacity 0.3s;
-  }
+  .saved-msg { font-size: 12px; color: var(--green-dark); opacity: 0; transition: opacity 0.3s; }
   .saved-msg.show { opacity: 1; }
 
-  /* ── PROGRESS BAR ───────────────────────────── */
-  .progress-bar {
-    display: flex; justify-content: center;
-    padding: 20px 24px 0;
-    gap: 8px;
-  }
-  .progress-step {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .step-dot {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    border: 2px solid var(--border);
-    color: var(--text-muted);
-    background: var(--white);
-    transition: all 0.3s;
-  }
+  .progress-bar { display: flex; justify-content: center; padding: 20px 24px 0; gap: 8px; }
+  .progress-step { display: flex; align-items: center; gap: 8px; }
+  .step-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid var(--border); color: var(--text-muted); background: var(--white); transition: all 0.3s; }
   .step-dot.active { border-color: var(--green); background: var(--green); color: var(--white); }
   .step-dot.done { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
   .step-label { font-size: 12px; color: var(--text-muted); display: none; }
@@ -145,530 +57,238 @@
   .step-line.done { background: var(--green); }
   @media(min-width:600px) { .step-label { display: block; } }
 
-  /* ── MAIN CONTAINER ─────────────────────────── */
   .container { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
+  .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 24px; margin-bottom: 16px; }
+  .card-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--green-light); }
 
-  /* ── CARDS ──────────────────────────────────── */
-  .card {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    padding: 24px;
-    margin-bottom: 16px;
-  }
-  .card-title {
-    font-size: 16px; font-weight: 700;
-    color: var(--dark); margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--green-light);
-  }
-
-  /* ── FORM ELEMENTS ──────────────────────────── */
   .field { margin-bottom: 16px; }
-  .field label {
-    display: block; font-size: 13px;
-    font-weight: 600; color: var(--text);
-    margin-bottom: 5px;
-  }
-  .field input[type="text"],
-  .field input[type="email"],
-  .field input[type="date"],
-  .field input[type="number"],
-  .field textarea,
-  .field select {
-    width: 100%; padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 15px; font-family: inherit;
-    background: var(--white);
-    transition: border-color 0.2s;
-  }
-  .field input:focus, .field textarea:focus, .field select:focus {
-    outline: none; border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(149,192,61,0.15);
-  }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .field input[type="text"], .field input[type="email"], .field input[type="date"], .field input[type="number"], .field textarea, .field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--white); transition: border-color 0.2s; }
+  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(149,192,61,0.15); }
   .field textarea { resize: vertical; min-height: 70px; }
-  .field .error-text {
-    font-size: 12px; color: var(--red);
-    margin-top: 3px; display: none;
-  }
-  .field.has-error input,
-  .field.has-error textarea {
-    border-color: var(--red);
-    background: var(--red-light);
-  }
+  .field .error-text { font-size: 12px; color: var(--red); margin-top: 3px; display: none; }
+  .field.has-error input, .field.has-error textarea, .field.has-error select { border-color: var(--red); background: var(--red-light); }
   .field.has-error .error-text { display: block; }
+  .field .hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 
-  /* ── STEPPER ────────────────────────────────── */
-  .stepper {
-    display: flex; align-items: center; gap: 0;
-  }
-  .stepper button {
-    width: 40px; height: 40px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    font-size: 18px; font-weight: 700;
-    cursor: pointer; color: var(--text);
-    transition: all 0.2s;
-  }
+  .autofill-box { background: var(--green-light); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .autofill-label { font-size: 13px; color: var(--text-light); }
+  .autofill-value { font-size: 18px; font-weight: 700; color: var(--green-dark); }
+
+  .stepper { display: flex; align-items: center; }
+  .stepper button { width: 40px; height: 40px; border: 1px solid var(--border); background: var(--bg); font-size: 18px; font-weight: 700; cursor: pointer; color: var(--text); transition: all 0.2s; }
   .stepper button:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
   .stepper button:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
   .stepper button:hover { background: var(--green-light); }
-  .stepper input {
-    width: 60px; text-align: center;
-    border: 1px solid var(--border);
-    border-left: none; border-right: none;
-    height: 40px; font-size: 15px; font-weight: 600;
-    border-radius: 0;
-  }
+  .stepper input { width: 60px; text-align: center; border: 1px solid var(--border); border-left: none; border-right: none; height: 40px; font-size: 15px; font-weight: 600; border-radius: 0; }
   .stepper input:focus { outline: none; }
 
-  /* ── TOGGLE ─────────────────────────────────── */
-  .toggle-row {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
-  }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
   .toggle-row:last-child { border-bottom: none; }
   .toggle-label { font-size: 14px; color: var(--text); }
-  .toggle {
-    position: relative;
-    width: 48px; height: 28px;
-  }
+  .toggle { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
   .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle .slider {
-    position: absolute; cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #ccc; border-radius: 28px;
-    transition: 0.3s;
-  }
-  .toggle .slider:before {
-    content: "";
-    position: absolute;
-    height: 22px; width: 22px;
-    left: 3px; bottom: 3px;
-    background: white; border-radius: 50%;
-    transition: 0.3s;
-    box-shadow: var(--shadow-sm);
-  }
+  .toggle .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 28px; transition: 0.3s; }
+  .toggle .slider:before { content: ""; position: absolute; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: var(--shadow-sm); }
   .toggle input:checked + .slider { background: var(--green); }
   .toggle input:checked + .slider:before { transform: translateX(20px); }
 
-  /* ── LIVE ESTIMATE ──────────────────────────── */
-  .live-estimate {
-    background: var(--green-light);
-    border-radius: var(--radius-sm);
-    padding: 14px 16px;
-    text-align: center;
-    margin-top: 8px;
-  }
-  .live-estimate .amount {
-    font-size: 28px; font-weight: 800;
-    color: var(--green-dark);
-  }
-  .live-estimate .label {
-    font-size: 12px; color: var(--text-light);
-  }
+  .live-estimate { background: var(--green-light); border-radius: var(--radius-sm); padding: 14px 16px; text-align: center; margin-top: 8px; }
+  .live-estimate .amount { font-size: 28px; font-weight: 800; color: var(--green-dark); }
+  .live-estimate .label { font-size: 12px; color: var(--text-light); }
 
-  /* ── BUTTONS ────────────────────────────────── */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 14px 32px;
-    border-radius: var(--radius-sm);
-    font-size: 15px; font-weight: 700;
-    cursor: pointer; border: none;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+  .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
   .btn-primary { background: var(--green); color: var(--white); width: 100%; }
   .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-  .btn-secondary {
-    background: var(--white); color: var(--text);
-    border: 1px solid var(--border); width: 100%;
-  }
+  .btn-secondary { background: var(--white); color: var(--text); border: 1px solid var(--border); width: 100%; }
   .btn-secondary:hover { background: var(--bg); }
   .btn-group { display: flex; gap: 10px; margin-top: 16px; }
   .btn-group .btn { flex: 1; }
 
-  /* ── COLLAPSIBLE SECTION ────────────────────── */
   .collapsible { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s; opacity: 0; }
   .collapsible.open { max-height: 1000px; opacity: 1; }
 
-  /* ── STEP VISIBILITY ────────────────────────── */
   .step { display: none; animation: fadeIn 0.3s ease; }
   .step.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── PREVIEW TABLES ─────────────────────────── */
-  .preview-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-  .preview-table th {
-    text-align: left; padding: 8px 10px;
-    background: var(--bg);
-    font-size: 11px; text-transform: uppercase;
-    letter-spacing: 0.5px; color: var(--text-muted);
-    border-bottom: 2px solid var(--border);
-  }
+  .preview-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .preview-table th { text-align: left; padding: 8px 10px; background: var(--bg); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border); }
   .preview-table th:not(:first-child) { text-align: right; }
-  .preview-table td {
-    padding: 10px; border-bottom: 1px solid #f0f0f0;
-  }
+  .preview-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; }
   .preview-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
-  .preview-table tr.total-row td {
-    font-weight: 700; border-top: 2px solid var(--dark);
-    border-bottom: none; background: #fafafa;
-  }
-  .year-summary {
-    background: var(--dark); color: var(--white);
-    padding: 16px; border-radius: var(--radius-sm);
-    text-align: center; margin-top: 16px;
-  }
-  .year-summary .big { font-size: 24px; font-weight: 800; }
-  .year-summary .sub { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .preview-table tr.total-row td { font-weight: 700; border-top: 2px solid var(--dark); border-bottom: none; background: #fafafa; }
 
-  /* ── SCOPE COLUMNS ──────────────────────────── */
   .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media(max-width: 500px) { .scope-grid { grid-template-columns: 1fr; } }
   .scope-col { border-radius: var(--radius-sm); padding: 16px; }
   .scope-included { background: var(--green-light); }
   .scope-excluded { background: #f5f5f5; }
-  .scope-col h4 {
-    font-size: 12px; text-transform: uppercase;
-    letter-spacing: 1px; margin-bottom: 10px;
-    padding-bottom: 6px;
-  }
+  .scope-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; padding-bottom: 6px; }
   .scope-included h4 { color: var(--green-dark); border-bottom: 2px solid var(--green); }
   .scope-excluded h4 { color: var(--text-muted); border-bottom: 2px solid #ddd; }
-  .scope-item {
-    font-size: 13px; padding: 4px 0;
-    display: flex; align-items: flex-start; gap: 6px;
-  }
+  .scope-item { font-size: 13px; padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; }
   .scope-item .tick { color: var(--green-dark); font-weight: 700; }
   .scope-item .cross { color: #bbb; }
-  .scope-item .upsell {
-    font-size: 11px; color: var(--text-muted);
-    font-style: italic; display: block;
-  }
+  .scope-item .upsell { font-size: 11px; color: var(--text-muted); font-style: italic; display: block; }
 
-  /* ── INFO ROW ───────────────────────────────── */
-  .info-row {
-    display: flex; justify-content: space-between;
-    padding: 8px 0; border-bottom: 1px solid #f0f0f0;
-    font-size: 14px;
-  }
+  .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
   .info-row:last-child { border-bottom: none; }
   .info-label { color: var(--text-light); }
   .info-value { font-weight: 600; }
 
-  /* ── PDF HIDDEN SECTION ─────────────────────── */
-  #pdfContent { position: absolute; left: -9999px; top: -9999px; }
-  #pdfContent.rendering { position: static; left: auto; top: auto; }
+  /* PDF header — hidden on screen, visible in print */
+  .pdf-print-header { display: none; }
+  .pdf-print-header h1 { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #262626; text-transform: uppercase; margin: 0; }
+  .pdf-print-header .tagline { font-size: 10px; color: #888; letter-spacing: 0.5px; margin: 2px 0 10px; }
+  .pdf-print-header .accent { height: 3px; background: #95c03d; margin-bottom: 16px; }
+  .pdf-print-footer { display: none; margin-top: 24px; padding-top: 12px; border-top: 2px solid #95c03d; font-size: 9px; color: #aaa; text-align: center; }
 
-  .pdf-page {
-    width: 210mm; min-height: 297mm;
-    padding: 20mm 22mm;
-    background: white; color: #262626;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif;
-    font-size: 11pt; line-height: 1.5;
-    box-sizing: border-box;
-  }
-  .pdf-header {
-    border-bottom: 3px solid #95c03d;
-    padding-bottom: 14px; margin-bottom: 20px;
-  }
-  .pdf-header h1 {
-    font-size: 22pt; font-weight: 800;
-    letter-spacing: 3px; color: #262626;
-    text-transform: uppercase; margin: 0;
-  }
-  .pdf-header p {
-    font-size: 9pt; color: #888;
-    letter-spacing: 0.5px; margin: 2px 0 0;
-  }
-  .pdf-meta {
-    display: flex; justify-content: space-between;
-    margin-bottom: 20px; font-size: 10pt;
-  }
-  .pdf-meta-block h3 {
-    font-size: 8pt; text-transform: uppercase;
-    letter-spacing: 1px; color: #999;
-    margin-bottom: 4px;
-  }
-  .pdf-meta-block p { margin: 1px 0; }
-  .pdf-intro {
-    font-size: 10pt; color: #555;
-    font-style: italic; margin-bottom: 20px;
-    padding: 12px 16px; background: #fafafa;
-    border-left: 3px solid #95c03d;
-  }
-  .pdf-section-title {
-    font-size: 11pt; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: #262626; margin: 20px 0 10px;
-    padding-bottom: 4px;
-    border-bottom: 2px solid #95c03d;
-  }
-  .pdf-scope { display: flex; gap: 12px; margin-bottom: 16px; }
-  .pdf-scope-col { flex: 1; border-radius: 6px; padding: 12px 14px; }
-  .pdf-scope-col.included { background: #e8f3d0; }
-  .pdf-scope-col.excluded { background: #f5f5f5; }
-  .pdf-scope-col h4 {
-    font-size: 8pt; text-transform: uppercase;
-    letter-spacing: 1px; font-weight: 700;
-    margin-bottom: 8px; padding-bottom: 4px;
-  }
-  .pdf-scope-col.included h4 { color: #7aa832; border-bottom: 2px solid #95c03d; }
-  .pdf-scope-col.excluded h4 { color: #999; border-bottom: 2px solid #ddd; }
-  .pdf-scope-item { font-size: 9.5pt; padding: 2px 0; }
-  .pdf-scope-item .note { font-size: 8pt; color: #999; font-style: italic; }
-  .pdf-table {
-    width: 100%; border-collapse: collapse;
-    font-size: 10pt; margin-bottom: 12px;
-  }
-  .pdf-table th {
-    text-align: left; padding: 6px 8px;
-    background: #f0f0f0; font-size: 8pt;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    color: #888; border-bottom: 2px solid #ddd;
-  }
-  .pdf-table th:not(:first-child) { text-align: right; }
-  .pdf-table td { padding: 7px 8px; border-bottom: 1px solid #eee; }
-  .pdf-table td:not(:first-child) { text-align: right; }
-  .pdf-table .total td {
-    font-weight: 700; border-top: 2px solid #262626;
-    background: #fafafa;
-  }
-  .pdf-year-box {
-    background: #262626; color: white;
-    padding: 12px; border-radius: 6px;
-    text-align: center; margin: 16px 0;
-  }
-  .pdf-year-box .big { font-size: 16pt; font-weight: 800; }
-  .pdf-year-box .sub { font-size: 8pt; color: #aaa; }
-  .pdf-notes {
-    background: #fafafa; padding: 10px 14px;
-    border-radius: 6px; font-size: 10pt;
-    margin: 12px 0; color: #555;
-  }
-  .pdf-terms { font-size: 9pt; color: #777; margin-top: 16px; }
-  .pdf-terms p { margin: 3px 0; }
-  .pdf-footer {
-    margin-top: 24px; padding-top: 12px;
-    border-top: 2px solid #95c03d;
-    font-size: 8pt; color: #aaa;
-    text-align: center;
+  /* ── PRINT STYLES ───────────────── */
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { background: white !important; margin: 0; padding: 0; font-size: 11pt; }
+    .header, .admin-panel, .progress-bar, .btn-group, .no-print { display: none !important; }
+    .container { max-width: 100%; padding: 10mm 15mm; margin: 0; }
+    .step { display: none !important; }
+    #step3 { display: block !important; }
+    .card { box-shadow: none !important; border: 1px solid #e0e0e0; break-inside: avoid; page-break-inside: avoid; margin-bottom: 10px; padding: 14px 16px; border-radius: 6px; }
+    .card-title { font-size: 13px; margin-bottom: 10px; padding-bottom: 6px; }
+    .pdf-print-header { display: block !important; }
+    .pdf-print-footer { display: block !important; }
+    .scope-included { background: #e8f3d0 !important; }
+    .scope-excluded { background: #f5f5f5 !important; }
+    .preview-table tr.total-row td { background: #fafafa !important; }
+    .preview-table th { background: #f3f4f6 !important; }
+    .live-estimate { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══════════ HEADER ══════════ -->
 <div class="header">
   <div class="header-brand">
     <h1>Armstrong Garden Care</h1>
-    <p>Professional Garden Maintenance · Edinburgh &amp; Lothians</p>
+    <p>Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p>
   </div>
-  <button class="admin-toggle" id="adminToggle" title="Admin Settings">⚙</button>
+  <button class="admin-toggle" id="adminToggle" title="Admin Settings">&#9881;</button>
 </div>
 
-<!-- ══════════ ADMIN PANEL ══════════ -->
 <div class="admin-panel" id="adminPanel">
   <div class="admin-inner">
     <h3>Admin Settings (internal only)</h3>
-    <div class="admin-field">
-      <label>Hourly charge rate (ex VAT)</label>
-      <input type="number" id="admRate" step="0.01" min="0">
-    </div>
-    <div class="admin-field">
-      <label>Waste cost per visit</label>
-      <input type="number" id="admWaste" step="0.01" min="0">
-    </div>
-    <div class="admin-field">
-      <label>RoboScape install fee default</label>
-      <input type="number" id="admInstall" step="0.01" min="0">
-    </div>
-    <div class="admin-field">
-      <label>VAT rate (%)</label>
-      <input type="number" id="admVAT" step="1" min="0" max="100">
-    </div>
-    <div class="admin-field">
-      <label>Service plan Tier 1 (monthly)</label>
-      <input type="number" id="admTier1" step="0.01" min="0">
-    </div>
-    <div class="admin-field">
-      <label>Service plan Tier 2 (monthly)</label>
-      <input type="number" id="admTier2" step="0.01" min="0">
-    </div>
+    <div class="admin-field"><label>Hourly charge rate (ex VAT)</label><input type="number" id="admRate" step="0.01" min="0"></div>
+    <div class="admin-field"><label>Waste cost per visit</label><input type="number" id="admWaste" step="0.01" min="0"></div>
+    <div class="admin-field"><label>RoboScape install fee default</label><input type="number" id="admInstall" step="0.01" min="0"></div>
+    <div class="admin-field"><label>VAT rate (%)</label><input type="number" id="admVAT" step="1" min="0" max="100"></div>
+    <div class="admin-field"><label>Service plan Tier 1 (monthly)</label><input type="number" id="admTier1" step="0.01" min="0"></div>
+    <div class="admin-field"><label>Service plan Tier 2 (monthly)</label><input type="number" id="admTier2" step="0.01" min="0"></div>
     <div class="admin-actions">
       <button class="btn-save" onclick="saveAdmin()">Save Settings</button>
       <button class="btn-reset" onclick="resetAdmin()">Reset to Defaults</button>
-      <span class="saved-msg" id="savedMsg">✓ Settings saved</span>
+      <span class="saved-msg" id="savedMsg">&#10003; Settings saved</span>
     </div>
   </div>
 </div>
 
-<!-- ══════════ PROGRESS BAR ══════════ -->
 <div class="progress-bar">
-  <div class="progress-step">
-    <div class="step-dot active" id="dot1">1</div>
-    <span class="step-label">Details</span>
-  </div>
+  <div class="progress-step"><div class="step-dot active" id="dot1">1</div><span class="step-label">Details</span></div>
   <div class="step-line" id="line1"></div>
-  <div class="progress-step">
-    <div class="step-dot" id="dot2">2</div>
-    <span class="step-label">Services</span>
-  </div>
+  <div class="progress-step"><div class="step-dot" id="dot2">2</div><span class="step-label">Services</span></div>
   <div class="step-line" id="line2"></div>
-  <div class="progress-step">
-    <div class="step-dot" id="dot3">3</div>
-    <span class="step-label">Quote</span>
-  </div>
+  <div class="progress-step"><div class="step-dot" id="dot3">3</div><span class="step-label">Quote</span></div>
 </div>
 
 <div class="container">
 
-<!-- ══════════ STEP 1: CLIENT DETAILS ══════════ -->
 <div class="step active" id="step1">
   <div class="card">
     <div class="card-title">Client Details</div>
-    <div class="field">
-      <label>First Name *</label>
-      <input type="text" id="firstName" placeholder="e.g. John">
-      <div class="error-text">First name is required</div>
-    </div>
-    <div class="field">
-      <label>Last Name *</label>
-      <input type="text" id="lastName" placeholder="e.g. Smith">
-      <div class="error-text">Last name is required</div>
-    </div>
-    <div class="field">
-      <label>Email Address *</label>
-      <input type="email" id="email" placeholder="e.g. john@email.com">
-      <div class="error-text">Valid email is required</div>
-    </div>
-    <div class="field">
-      <label>Property Address *</label>
-      <input type="text" id="address" placeholder="e.g. 12 Garden Lane, Edinburgh EH4 1AB">
-      <div class="error-text">Property address is required</div>
-    </div>
-    <div class="field">
-      <label>Service Start Date</label>
-      <input type="date" id="startDate">
-      <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Leave blank for TBC</div>
-    </div>
+    <div class="field"><label>First Name *</label><input type="text" id="firstName" placeholder="e.g. John"><div class="error-text">First name is required</div></div>
+    <div class="field"><label>Last Name *</label><input type="text" id="lastName" placeholder="e.g. Smith"><div class="error-text">Last name is required</div></div>
+    <div class="field"><label>Email Address *</label><input type="email" id="email" placeholder="e.g. john@email.com"><div class="error-text">Valid email is required</div></div>
+    <div class="field"><label>Property Address *</label><input type="text" id="address" placeholder="e.g. 12 Garden Lane, Edinburgh EH4 1AB"><div class="error-text">Property address is required</div></div>
+    <div class="field"><label>Service Start Date</label><input type="date" id="startDate"><div class="hint">Leave blank for TBC</div></div>
   </div>
-  <button class="btn btn-primary" onclick="goStep(2)">Next — Configure Services</button>
+  <button class="btn btn-primary" onclick="goStep(2)">Next &mdash; Configure Services</button>
 </div>
 
-<!-- ══════════ STEP 2: SERVICE CONFIG ══════════ -->
 <div class="step" id="step2">
-
-  <!-- Service Specification -->
   <div class="card">
     <div class="card-title">Service Specification</div>
     <div class="field">
       <label>Hours Per Visit</label>
-      <div class="stepper">
-        <button onclick="stepVal('hoursVal',-0.5)">−</button>
-        <input type="number" id="hoursVal" value="2" step="0.5" min="0.5" max="8" readonly>
-        <button onclick="stepVal('hoursVal',0.5)">+</button>
-      </div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Internal only — not shown to client</div>
+      <div class="stepper"><button onclick="stepVal('hoursVal',-0.5)">&minus;</button><input type="number" id="hoursVal" value="2" step="0.5" min="0.5" max="8" readonly><button onclick="stepVal('hoursVal',0.5)">+</button></div>
+      <div class="hint">Internal only &mdash; not shown to client</div>
     </div>
     <div class="field">
       <label>Total Visits Per Year</label>
-      <div class="stepper">
-        <button onclick="stepVal('visitsVal',-1)">−</button>
-        <input type="number" id="visitsVal" value="26" step="1" min="1" max="52" readonly>
-        <button onclick="stepVal('visitsVal',1)">+</button>
-      </div>
+      <div class="stepper"><button onclick="stepVal('visitsVal',-1)">&minus;</button><input type="number" id="visitsVal" value="26" step="1" min="1" max="52" readonly><button onclick="stepVal('visitsVal',1)">+</button></div>
     </div>
-    <div class="toggle-row">
-      <span class="toggle-label">Lawn Included</span>
-      <label class="toggle">
-        <input type="checkbox" id="lawnToggle" checked onchange="syncServices()">
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">Waste Removal Included</span>
-      <label class="toggle">
-        <input type="checkbox" id="wasteToggle" checked onchange="syncServices()">
-        <span class="slider"></span>
-      </label>
-    </div>
+    <div class="toggle-row"><span class="toggle-label">Lawn Included</span><label class="toggle"><input type="checkbox" id="lawnToggle" checked onchange="syncServices()"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label">Waste Removal Included</span><label class="toggle"><input type="checkbox" id="wasteToggle" checked onchange="syncServices()"><span class="slider"></span></label></div>
     <div class="live-estimate">
       <div class="label">Estimated monthly garden care</div>
-      <div class="amount" id="liveEstimate">£0.00</div>
+      <div class="amount" id="liveEstimate">&pound;0.00</div>
       <div class="label">ex VAT</div>
     </div>
   </div>
 
-  <!-- Bespoke Services -->
-  <div class="card">
-    <div class="card-title">Bespoke Services</div>
-    <div id="serviceToggles"></div>
-  </div>
+  <div class="card"><div class="card-title">Bespoke Services</div><div id="serviceToggles"></div></div>
 
-  <!-- One-Off Works -->
   <div class="card">
     <div class="card-title">One-Off Works</div>
-    <div class="field">
-      <label>Description</label>
-      <input type="text" id="oneOffDesc" placeholder="e.g. Driveway power wash">
-    </div>
-    <div class="field">
-      <label>Value (£ ex VAT)</label>
-      <input type="number" id="oneOffValue" step="0.01" min="0" placeholder="0.00">
-    </div>
+    <div class="field"><label>Description</label><input type="text" id="oneOffDesc" placeholder="e.g. Driveway power wash"></div>
+    <div class="field"><label>Value (&pound; ex VAT)</label><input type="number" id="oneOffValue" step="0.01" min="0" placeholder="0.00"></div>
   </div>
 
-  <!-- RoboScape Add-On -->
   <div class="card">
     <div class="card-title">RoboScape Add-On</div>
-    <div class="toggle-row">
-      <span class="toggle-label" style="font-weight:600;">Include RoboScape?</span>
-      <label class="toggle">
-        <input type="checkbox" id="roboToggle" onchange="toggleRobo()">
-        <span class="slider"></span>
-      </label>
-    </div>
+    <div class="toggle-row"><span class="toggle-label" style="font-weight:600;">Include RoboScape?</span><label class="toggle"><input type="checkbox" id="roboToggle" onchange="toggleRobo()"><span class="slider"></span></label></div>
     <div class="collapsible" id="roboSection">
       <div class="field" style="margin-top:14px;">
         <label>Machine Model</label>
-        <input type="text" id="roboModel" placeholder="e.g. Segway Navimow i108E">
+        <select id="roboModel" onchange="onModelSelect()">
+          <option value="">-- Select a model --</option>
+          <optgroup label="i Series (Entry Level)">
+            <option value="i108E" data-price="899" data-coverage="800">i108E &mdash; up to 800m&sup2;</option>
+            <option value="i210E AWD" data-price="1099" data-coverage="1000">i210E AWD &mdash; up to 1,000m&sup2;</option>
+          </optgroup>
+          <optgroup label="H2 Series (Premium LiDAR)">
+            <option value="H206E" data-price="1499" data-coverage="500">H206E &mdash; up to 500m&sup2;</option>
+            <option value="H210E" data-price="1699" data-coverage="1000">H210E &mdash; up to 1,000m&sup2;</option>
+            <option value="H215E" data-price="1999" data-coverage="1500">H215E &mdash; up to 1,500m&sup2;</option>
+            <option value="H230E" data-price="2299" data-coverage="3000">H230E &mdash; up to 3,000m&sup2;</option>
+          </optgroup>
+          <optgroup label="X4 Series (4WD Premium)">
+            <option value="X420E" data-price="2199" data-coverage="2000">X420E &mdash; up to 2,000m&sup2;</option>
+            <option value="X430E" data-price="2499" data-coverage="3000">X430E &mdash; up to 3,000m&sup2;</option>
+            <option value="X450E" data-price="2799" data-coverage="5000">X450E &mdash; up to 5,000m&sup2;</option>
+          </optgroup>
+        </select>
       </div>
-      <div class="field">
-        <label>Machine Cost (£ ex VAT)</label>
-        <input type="number" id="roboCost" step="0.01" min="0" placeholder="0.00">
+      <div class="autofill-box" id="machinePrice" style="display:none;">
+        <span class="autofill-label">Machine cost (ex VAT)</span>
+        <span class="autofill-value" id="machinePriceVal">&pound;0.00</span>
       </div>
-      <div class="field">
+      <input type="hidden" id="roboCost" value="0">
+      <div class="field" style="margin-top:14px;">
         <label>Service Plan Tier</label>
         <select id="roboTier">
           <option value="none">None</option>
-          <option value="tier1">Tier 1 — £19.99/mo</option>
-          <option value="tier2">Tier 2 — £29.99/mo</option>
+          <option value="tier1">Tier 1 &mdash; &pound;19.99/mo</option>
+          <option value="tier2">Tier 2 &mdash; &pound;29.99/mo</option>
         </select>
       </div>
       <div class="field">
-        <label>Install Fee (£ ex VAT)</label>
+        <label>Install Fee (&pound; ex VAT)</label>
         <input type="number" id="roboInstall" step="0.01" min="0">
+        <div class="hint">Pre-filled from admin defaults. Editable per quote.</div>
       </div>
     </div>
   </div>
 
-  <!-- Additional Notes -->
-  <div class="card">
-    <div class="card-title">Additional Notes</div>
-    <div class="field" style="margin-bottom:0;">
-      <textarea id="additionalNotes" placeholder="Any extra notes for this quote..." maxlength="500"></textarea>
-    </div>
-  </div>
+  <div class="card"><div class="card-title">Additional Notes</div><div class="field" style="margin-bottom:0;"><textarea id="additionalNotes" placeholder="Any extra notes for this quote..." maxlength="500"></textarea></div></div>
 
   <div class="btn-group">
     <button class="btn btn-secondary" onclick="goStep(1)">Back</button>
@@ -676,481 +296,107 @@
   </div>
 </div>
 
-<!-- ══════════ STEP 3: QUOTE PREVIEW ══════════ -->
 <div class="step" id="step3">
+  <div class="pdf-print-header">
+    <h1>Armstrong Garden Care</h1>
+    <p class="tagline">Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p>
+    <div class="accent"></div>
+  </div>
   <div id="previewContent"></div>
-  <div class="btn-group">
+  <div class="pdf-print-footer">Armstrong Garden Care &middot; armstronggardencare.co.uk</div>
+  <div class="btn-group no-print">
     <button class="btn btn-secondary" onclick="goStep(2)">Edit Quote</button>
-    <button class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
+    <button class="btn btn-primary" onclick="printPDF()">Download PDF</button>
   </div>
 </div>
 
-</div><!-- /container -->
-
-<!-- ══════════ HIDDEN PDF CONTENT ══════════ -->
-<div id="pdfContent"></div>
+</div>
 
 <script>
-// ── DEFAULTS & STATE ─────────────────────────────
-const DEFAULTS = {
-  rate: 60, waste: 20, install: 150,
-  vat: 20, tier1: 19.99, tier2: 29.99
-};
-
-const SERVICES = [
-  { id: 'svc_lawn', label: 'Lawn cutting & edging', default: true, linkedTo: 'lawnToggle' },
-  { id: 'svc_border', label: 'Border weeding / bed maintenance', default: true },
-  { id: 'svc_shrub', label: 'Shrub pruning (light)', default: true },
-  { id: 'svc_hedge', label: 'Hedge trimming (light/standard)', default: true },
-  { id: 'svc_cutbacks', label: 'Seasonal cutbacks', default: false },
-  { id: 'svc_leaf', label: 'Annual leaf clearance', default: false },
-  { id: 'svc_blowdown', label: 'Hard surface blow-down / tidy', default: false },
-  { id: 'svc_greenwaste', label: 'Green waste removal', default: true, linkedTo: 'wasteToggle' },
+const DEFAULTS={rate:60,waste:10,install:150,vat:20,tier1:19.99,tier2:29.99};
+const SERVICES=[
+  {id:'svc_lawn',label:'Lawn cutting & edging',default:true,linkedTo:'lawnToggle'},
+  {id:'svc_border',label:'Border weeding / bed maintenance',default:true},
+  {id:'svc_shrub',label:'Shrub pruning (light)',default:true},
+  {id:'svc_hedge',label:'Hedge trimming (light/standard)',default:true},
+  {id:'svc_cutbacks',label:'Seasonal cutbacks',default:false},
+  {id:'svc_leaf',label:'Annual leaf clearance',default:false},
+  {id:'svc_blowdown',label:'Hard surface blow-down / tidy',default:false},
+  {id:'svc_greenwaste',label:'Green waste removal',default:true,linkedTo:'wasteToggle'},
 ];
+let admin={...DEFAULTS};
 
-let admin = { ...DEFAULTS };
+document.addEventListener('DOMContentLoaded',()=>{loadAdmin();renderServiceToggles();updateLiveEstimate();setupLiveListeners();document.getElementById('startDate').setAttribute('min',new Date().toISOString().split('T')[0]);});
 
-// ── INIT ─────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  loadAdmin();
-  renderServiceToggles();
-  updateLiveEstimate();
-  setupLiveListeners();
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('startDate').setAttribute('min', today);
-});
+function loadAdmin(){try{const s=localStorage.getItem('agc_admin');if(s)admin={...DEFAULTS,...JSON.parse(s)};}catch(e){}document.getElementById('admRate').value=admin.rate;document.getElementById('admWaste').value=admin.waste;document.getElementById('admInstall').value=admin.install;document.getElementById('admVAT').value=admin.vat;document.getElementById('admTier1').value=admin.tier1;document.getElementById('admTier2').value=admin.tier2;document.getElementById('roboInstall').value=admin.install;}
+function saveAdmin(){admin.rate=parseFloat(document.getElementById('admRate').value)||DEFAULTS.rate;admin.waste=parseFloat(document.getElementById('admWaste').value)||DEFAULTS.waste;admin.install=parseFloat(document.getElementById('admInstall').value)||DEFAULTS.install;admin.vat=parseFloat(document.getElementById('admVAT').value)||DEFAULTS.vat;admin.tier1=parseFloat(document.getElementById('admTier1').value)||DEFAULTS.tier1;admin.tier2=parseFloat(document.getElementById('admTier2').value)||DEFAULTS.tier2;try{localStorage.setItem('agc_admin',JSON.stringify(admin));}catch(e){}const m=document.getElementById('savedMsg');m.classList.add('show');setTimeout(()=>m.classList.remove('show'),2000);updateLiveEstimate();}
+function resetAdmin(){admin={...DEFAULTS};try{localStorage.removeItem('agc_admin');}catch(e){}loadAdmin();updateLiveEstimate();}
+document.getElementById('adminToggle').addEventListener('click',()=>{document.getElementById('adminPanel').classList.toggle('open');document.getElementById('adminToggle').classList.toggle('active');});
 
-// ── ADMIN ────────────────────────────────────────
-function loadAdmin() {
-  try {
-    const saved = localStorage.getItem('agc_admin');
-    if (saved) admin = { ...DEFAULTS, ...JSON.parse(saved) };
-  } catch(e) {}
-  document.getElementById('admRate').value = admin.rate;
-  document.getElementById('admWaste').value = admin.waste;
-  document.getElementById('admInstall').value = admin.install;
-  document.getElementById('admVAT').value = admin.vat;
-  document.getElementById('admTier1').value = admin.tier1;
-  document.getElementById('admTier2').value = admin.tier2;
-  document.getElementById('roboInstall').value = admin.install;
+function renderServiceToggles(){document.getElementById('serviceToggles').innerHTML=SERVICES.map(s=>`<div class="toggle-row"><span class="toggle-label">${s.label}</span><label class="toggle"><input type="checkbox" id="${s.id}" ${s.default?'checked':''} ${s.linkedTo?'data-linked="'+s.linkedTo+'"':''}><span class="slider"></span></label></div>`).join('');}
+function syncServices(){const l=document.getElementById('lawnToggle').checked,w=document.getElementById('wasteToggle').checked;const ls=document.getElementById('svc_lawn');if(ls){ls.checked=l;ls.disabled=!l;}const ws=document.getElementById('svc_greenwaste');if(ws){ws.checked=w;ws.disabled=!w;}updateLiveEstimate();}
+function stepVal(id,d){const el=document.getElementById(id);let v=parseFloat(el.value)+d;v=Math.max(parseFloat(el.min),Math.min(parseFloat(el.max),v));el.value=v;updateLiveEstimate();}
+function setupLiveListeners(){['hoursVal','visitsVal'].forEach(id=>document.getElementById(id).addEventListener('change',updateLiveEstimate));}
+function updateLiveEstimate(){const h=parseFloat(document.getElementById('hoursVal').value)||0,v=parseInt(document.getElementById('visitsVal').value)||0;document.getElementById('liveEstimate').textContent=gbp((h*v*admin.rate)/12);}
+function toggleRobo(){const on=document.getElementById('roboToggle').checked;document.getElementById('roboSection').classList.toggle('open',on);if(!on){document.getElementById('roboModel').value='';document.getElementById('roboCost').value=0;document.getElementById('machinePrice').style.display='none';}}
+function onModelSelect(){const sel=document.getElementById('roboModel'),opt=sel.options[sel.selectedIndex],price=parseFloat(opt.getAttribute('data-price'))||0;document.getElementById('roboCost').value=price;const box=document.getElementById('machinePrice'),val=document.getElementById('machinePriceVal');if(price>0){box.style.display='flex';val.textContent=gbp(price);}else{box.style.display='none';}}
+
+function goStep(n){if(n===2&&!validateStep1())return;if(n===3)buildPreview();document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById('step'+n).classList.add('active');[1,2,3].forEach(i=>{const d=document.getElementById('dot'+i);d.classList.remove('active','done');if(i<n)d.classList.add('done');if(i===n)d.classList.add('active');});[1,2].forEach(i=>document.getElementById('line'+i).classList.toggle('done',i<n));window.scrollTo({top:0,behavior:'smooth'});}
+function validateStep1(){let ok=true;[{id:'firstName',test:v=>v.trim().length>0},{id:'lastName',test:v=>v.trim().length>0},{id:'email',test:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},{id:'address',test:v=>v.trim().length>0}].forEach(f=>{const el=document.getElementById(f.id),w=el.closest('.field');if(!f.test(el.value)){w.classList.add('has-error');ok=false;}else{w.classList.remove('has-error');}});return ok;}
+
+function calculate(){
+  const hours=parseFloat(document.getElementById('hoursVal').value)||0,visits=parseInt(document.getElementById('visitsVal').value)||0;
+  const wasteOn=document.getElementById('wasteToggle').checked,roboOn=document.getElementById('roboToggle').checked,vatRate=admin.vat/100;
+  const gcAnnual=hours*visits*admin.rate,gcMonthly=gcAnnual/12;
+  const wasteAnnual=wasteOn?visits*admin.waste:0,wasteMonthly=wasteAnnual/12;
+  let roboPlanMonthly=0;const roboTier=document.getElementById('roboTier').value;
+  if(roboOn&&roboTier==='tier1')roboPlanMonthly=admin.tier1;if(roboOn&&roboTier==='tier2')roboPlanMonthly=admin.tier2;
+  const roboMachine=roboOn?(parseFloat(document.getElementById('roboCost').value)||0):0;
+  const roboInstallFee=roboOn?(parseFloat(document.getElementById('roboInstall').value)||admin.install):0;
+  const oneOffVal=parseFloat(document.getElementById('oneOffValue').value)||0,oneOffDesc=document.getElementById('oneOffDesc').value.trim(),oneOffActive=oneOffVal>0&&oneOffDesc.length>0;
+  const monthlyDD=gcMonthly+wasteMonthly+roboPlanMonthly;
+  const totalOneOff=(oneOffActive?oneOffVal:0)+roboMachine+roboInstallFee;
+  function wv(ex){return{ex,vat:ex*vatRate,inc:ex*(1+vatRate)};}
+  const modelSel=document.getElementById('roboModel');
+  const modelName=roboOn&&modelSel.value?'Segway Navimow '+modelSel.value:'';
+  return{gc:wv(gcMonthly),waste:wasteOn?wv(wasteMonthly):null,roboPlan:roboOn&&roboPlanMonthly>0?wv(roboPlanMonthly):null,monthlyDD:wv(monthlyDD),roboMachine:roboOn&&roboMachine>0?wv(roboMachine):null,roboInstall:roboOn&&roboInstallFee>0?wv(roboInstallFee):null,oneOff:oneOffActive?{...wv(oneOffVal),desc:oneOffDesc}:null,totalOneOff:totalOneOff>0?wv(totalOneOff):null,visits,wasteOn,roboOn,roboModel:modelName,roboTier};
 }
+function getServices(){const inc=[],exc=[];SERVICES.forEach(s=>{const el=document.getElementById(s.id);if(el&&el.checked)inc.push(s.label);else exc.push(s.label);});return{included:inc,excluded:exc};}
+function getQuoteRef(){const sn=document.getElementById('lastName').value.trim().toUpperCase(),now=new Date(),ms=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];return`AGC-${sn}-${ms[now.getMonth()]}${String(now.getFullYear()).slice(-2)}`;}
+function getClientData(){const sr=document.getElementById('startDate').value;let sf='TBC';if(sr){const d=new Date(sr+'T00:00:00'),m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];sf=`${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}return{fullName:document.getElementById('firstName').value.trim()+' '+document.getElementById('lastName').value.trim(),email:document.getElementById('email').value.trim(),address:document.getElementById('address').value.trim(),startDate:sf,notes:document.getElementById('additionalNotes').value.trim()};}
+function todayF(){const d=new Date(),m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return`${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}
+function gbp(v){return'\u00A3'+v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
 
-function saveAdmin() {
-  admin.rate = parseFloat(document.getElementById('admRate').value) || DEFAULTS.rate;
-  admin.waste = parseFloat(document.getElementById('admWaste').value) || DEFAULTS.waste;
-  admin.install = parseFloat(document.getElementById('admInstall').value) || DEFAULTS.install;
-  admin.vat = parseFloat(document.getElementById('admVAT').value) || DEFAULTS.vat;
-  admin.tier1 = parseFloat(document.getElementById('admTier1').value) || DEFAULTS.tier1;
-  admin.tier2 = parseFloat(document.getElementById('admTier2').value) || DEFAULTS.tier2;
-  try { localStorage.setItem('agc_admin', JSON.stringify(admin)); } catch(e) {}
-  const msg = document.getElementById('savedMsg');
-  msg.classList.add('show');
-  setTimeout(() => msg.classList.remove('show'), 2000);
-  updateLiveEstimate();
-}
+function buildPreview(){
+  const c=calculate(),svc=getServices(),cl=getClientData(),ref=getQuoteRef();let h='';
 
-function resetAdmin() {
-  admin = { ...DEFAULTS };
-  try { localStorage.removeItem('agc_admin'); } catch(e) {}
-  loadAdmin();
-  updateLiveEstimate();
-}
+  h+=`<div class="card" style="font-size:13px;color:#666;font-style:italic;border-left:3px solid #95c03d;padding:16px 20px;">Armstrong Garden Care delivers structured, professional maintenance programmes &mdash; designed around your garden, not a generic schedule. The following sets out your tailored service, what is and isn't included, and your monthly investment.</div>`;
 
-document.getElementById('adminToggle').addEventListener('click', () => {
-  const panel = document.getElementById('adminPanel');
-  const btn = document.getElementById('adminToggle');
-  panel.classList.toggle('open');
-  btn.classList.toggle('active');
-});
+  h+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;"><div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Quote Reference</div><div style="font-size:20px;font-weight:800;color:var(--dark);">${ref}</div></div><div style="text-align:right;"><div style="font-size:11px;color:var(--text-muted);">Date: ${todayF()}</div><div style="font-size:11px;color:var(--text-muted);">Start: ${cl.startDate}</div></div></div><div style="margin-top:14px;"><div class="info-row"><span class="info-label">Client</span><span class="info-value">${cl.fullName}</span></div><div class="info-row"><span class="info-label">Address</span><span class="info-value">${cl.address}</span></div><div class="info-row"><span class="info-label">Email</span><span class="info-value">${cl.email}</span></div><div class="info-row"><span class="info-label">Visits per year</span><span class="info-value">${c.visits}</span></div><div class="info-row"><span class="info-label">On behalf of</span><span class="info-value">Owen Duddy</span></div></div></div>`;
 
-// ── SERVICE TOGGLES ──────────────────────────────
-function renderServiceToggles() {
-  const container = document.getElementById('serviceToggles');
-  container.innerHTML = SERVICES.map(s => `
-    <div class="toggle-row">
-      <span class="toggle-label">${s.label}</span>
-      <label class="toggle">
-        <input type="checkbox" id="${s.id}" ${s.default ? 'checked' : ''} ${s.linkedTo ? 'data-linked="'+s.linkedTo+'"' : ''}>
-        <span class="slider"></span>
-      </label>
-    </div>
-  `).join('');
-}
+  h+=`<div class="card"><div class="card-title">Scope of Service</div><div class="scope-grid"><div class="scope-col scope-included"><h4>Included</h4>${svc.included.map(s=>`<div class="scope-item"><span class="tick">&#10003;</span> ${s}</div>`).join('')}</div><div class="scope-col scope-excluded"><h4>Not Included</h4>${svc.excluded.map(s=>`<div class="scope-item"><span class="cross">&#10007;</span> <span>${s}<span class="upsell">Available separately</span></span></div>`).join('')}</div></div></div>`;
 
-function syncServices() {
-  const lawn = document.getElementById('lawnToggle').checked;
-  const waste = document.getElementById('wasteToggle').checked;
-  const lawnSvc = document.getElementById('svc_lawn');
-  const wasteSvc = document.getElementById('svc_greenwaste');
-  if (lawnSvc) { lawnSvc.checked = lawn; lawnSvc.disabled = !lawn; }
-  if (wasteSvc) { wasteSvc.checked = waste; wasteSvc.disabled = !waste; }
-  updateLiveEstimate();
-}
+  h+=`<div class="card"><div class="card-title">Monthly Direct Debit</div><table class="preview-table"><thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead><tbody><tr><td>Garden maintenance</td><td>${gbp(c.gc.ex)}</td><td>${gbp(c.gc.vat)}</td><td>${gbp(c.gc.inc)}</td></tr>`;
+  if(c.waste)h+=`<tr><td>Waste removal</td><td>${gbp(c.waste.ex)}</td><td>${gbp(c.waste.vat)}</td><td>${gbp(c.waste.inc)}</td></tr>`;
+  if(c.roboPlan)h+=`<tr><td>RoboScape service plan</td><td>${gbp(c.roboPlan.ex)}</td><td>${gbp(c.roboPlan.vat)}</td><td>${gbp(c.roboPlan.inc)}</td></tr>`;
+  h+=`<tr class="total-row"><td>Total monthly DD</td><td>${gbp(c.monthlyDD.ex)}</td><td>${gbp(c.monthlyDD.vat)}</td><td>${gbp(c.monthlyDD.inc)}</td></tr></tbody></table></div>`;
 
-// ── STEPPER ──────────────────────────────────────
-function stepVal(id, delta) {
-  const el = document.getElementById(id);
-  let val = parseFloat(el.value) + delta;
-  val = Math.max(parseFloat(el.min), Math.min(parseFloat(el.max), val));
-  el.value = val;
-  updateLiveEstimate();
-}
-
-// ── LIVE ESTIMATE ────────────────────────────────
-function setupLiveListeners() {
-  ['hoursVal','visitsVal'].forEach(id => {
-    document.getElementById(id).addEventListener('change', updateLiveEstimate);
-  });
-}
-
-function updateLiveEstimate() {
-  const hours = parseFloat(document.getElementById('hoursVal').value) || 0;
-  const visits = parseInt(document.getElementById('visitsVal').value) || 0;
-  const monthly = (hours * visits * admin.rate) / 12;
-  document.getElementById('liveEstimate').textContent = gbp(monthly);
-}
-
-// ── ROBOSCAPE TOGGLE ─────────────────────────────
-function toggleRobo() {
-  const on = document.getElementById('roboToggle').checked;
-  const section = document.getElementById('roboSection');
-  if (on) { section.classList.add('open'); }
-  else { section.classList.remove('open'); }
-}
-
-// ── NAVIGATION ───────────────────────────────────
-function goStep(n) {
-  if (n === 2 && !validateStep1()) return;
-  if (n === 3) buildPreview();
-
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step' + n).classList.add('active');
-
-  [1,2,3].forEach(i => {
-    const dot = document.getElementById('dot' + i);
-    dot.classList.remove('active','done');
-    if (i < n) dot.classList.add('done');
-    if (i === n) dot.classList.add('active');
-  });
-  [1,2].forEach(i => {
-    const line = document.getElementById('line' + i);
-    line.classList.toggle('done', i < n);
-  });
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function validateStep1() {
-  let valid = true;
-  const fields = [
-    { id: 'firstName', test: v => v.trim().length > 0 },
-    { id: 'lastName', test: v => v.trim().length > 0 },
-    { id: 'email', test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
-    { id: 'address', test: v => v.trim().length > 0 },
-  ];
-  fields.forEach(f => {
-    const el = document.getElementById(f.id);
-    const wrap = el.closest('.field');
-    if (!f.test(el.value)) { wrap.classList.add('has-error'); valid = false; }
-    else { wrap.classList.remove('has-error'); }
-  });
-  return valid;
-}
-
-// ── CALCULATIONS ─────────────────────────────────
-function calculate() {
-  const hours = parseFloat(document.getElementById('hoursVal').value) || 0;
-  const visits = parseInt(document.getElementById('visitsVal').value) || 0;
-  const wasteOn = document.getElementById('wasteToggle').checked;
-  const roboOn = document.getElementById('roboToggle').checked;
-  const vatRate = admin.vat / 100;
-
-  // Garden care
-  const gcAnnual = hours * visits * admin.rate;
-  const gcMonthly = gcAnnual / 12;
-
-  // Waste
-  const wasteAnnual = wasteOn ? visits * admin.waste : 0;
-  const wasteMonthly = wasteAnnual / 12;
-
-  // RoboScape
-  let roboPlanMonthly = 0;
-  const roboTier = document.getElementById('roboTier').value;
-  if (roboOn && roboTier === 'tier1') roboPlanMonthly = admin.tier1;
-  if (roboOn && roboTier === 'tier2') roboPlanMonthly = admin.tier2;
-  const roboPlanAnnual = roboPlanMonthly * 12;
-  const roboMachine = roboOn ? (parseFloat(document.getElementById('roboCost').value) || 0) : 0;
-  const roboInstallFee = roboOn ? (parseFloat(document.getElementById('roboInstall').value) || admin.install) : 0;
-
-  // One-off
-  const oneOffVal = parseFloat(document.getElementById('oneOffValue').value) || 0;
-  const oneOffDesc = document.getElementById('oneOffDesc').value.trim();
-  const oneOffActive = oneOffVal > 0 && oneOffDesc.length > 0;
-
-  // Totals
-  const monthlyDD = gcMonthly + wasteMonthly + roboPlanMonthly;
-  const totalOneOff = (oneOffActive ? oneOffVal : 0) + roboMachine + roboInstallFee;
-  const yearTotal = (monthlyDD * 12) + totalOneOff;
-
-  function withVAT(ex) { return { ex, vat: ex * vatRate, inc: ex * (1 + vatRate) }; }
-
-  return {
-    gc: withVAT(gcMonthly),
-    waste: wasteOn ? withVAT(wasteMonthly) : null,
-    roboPlan: roboOn && roboPlanMonthly > 0 ? withVAT(roboPlanMonthly) : null,
-    monthlyDD: withVAT(monthlyDD),
-    roboMachine: roboOn && roboMachine > 0 ? withVAT(roboMachine) : null,
-    roboInstall: roboOn && roboInstallFee > 0 ? withVAT(roboInstallFee) : null,
-    oneOff: oneOffActive ? { ...withVAT(oneOffVal), desc: oneOffDesc } : null,
-    totalOneOff: totalOneOff > 0 ? withVAT(totalOneOff) : null,
-    yearTotal: withVAT(yearTotal),
-    visits, wasteOn, roboOn,
-    roboModel: roboOn ? document.getElementById('roboModel').value : '',
-    roboTier: roboOn ? roboTier : 'none',
-  };
-}
-
-function getServices() {
-  const included = [], excluded = [];
-  SERVICES.forEach(s => {
-    const el = document.getElementById(s.id);
-    if (el && el.checked) included.push(s.label);
-    else excluded.push(s.label);
-  });
-  return { included, excluded };
-}
-
-function getQuoteRef() {
-  const surname = document.getElementById('lastName').value.trim().toUpperCase();
-  const now = new Date();
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  const yy = String(now.getFullYear()).slice(-2);
-  return `AGC-${surname}-${months[now.getMonth()]}${yy}`;
-}
-
-function getClientData() {
-  const startRaw = document.getElementById('startDate').value;
-  let startFormatted = 'TBC';
-  if (startRaw) {
-    const d = new Date(startRaw + 'T00:00:00');
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    startFormatted = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-  }
-  return {
-    firstName: document.getElementById('firstName').value.trim(),
-    lastName: document.getElementById('lastName').value.trim(),
-    fullName: document.getElementById('firstName').value.trim() + ' ' + document.getElementById('lastName').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    address: document.getElementById('address').value.trim(),
-    startDate: startFormatted,
-    notes: document.getElementById('additionalNotes').value.trim(),
-  };
-}
-
-function todayFormatted() {
-  const d = new Date();
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-}
-
-function gbp(v) {
-  return '£' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-// ── BUILD PREVIEW ────────────────────────────────
-function buildPreview() {
-  const calc = calculate();
-  const svc = getServices();
-  const client = getClientData();
-  const ref = getQuoteRef();
-
-  let html = '';
-
-  // Quote info card
-  html += `<div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
-      <div>
-        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Quote Reference</div>
-        <div style="font-size:20px;font-weight:800;color:var(--dark);">${ref}</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-size:11px;color:var(--text-muted);">Date: ${todayFormatted()}</div>
-        <div style="font-size:11px;color:var(--text-muted);">Start: ${client.startDate}</div>
-      </div>
-    </div>
-    <div style="margin-top:14px;">
-      <div class="info-row"><span class="info-label">Client</span><span class="info-value">${client.fullName}</span></div>
-      <div class="info-row"><span class="info-label">Address</span><span class="info-value">${client.address}</span></div>
-      <div class="info-row"><span class="info-label">Email</span><span class="info-value">${client.email}</span></div>
-      <div class="info-row"><span class="info-label">Visits per year</span><span class="info-value">${calc.visits}</span></div>
-    </div>
-  </div>`;
-
-  // Scope card
-  html += `<div class="card">
-    <div class="card-title">Scope of Service</div>
-    <div class="scope-grid">
-      <div class="scope-col scope-included">
-        <h4>Included</h4>
-        ${svc.included.map(s => `<div class="scope-item"><span class="tick">✓</span> ${s}</div>`).join('')}
-      </div>
-      <div class="scope-col scope-excluded">
-        <h4>Not Included</h4>
-        ${svc.excluded.map(s => `<div class="scope-item"><span class="cross">✗</span> <span>${s}<span class="upsell">Available separately</span></span></div>`).join('')}
-      </div>
-    </div>
-  </div>`;
-
-  // Monthly DD card
-  html += `<div class="card">
-    <div class="card-title">Monthly Direct Debit</div>
-    <table class="preview-table">
-      <thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead>
-      <tbody>
-        <tr><td>Garden maintenance</td><td>${gbp(calc.gc.ex)}</td><td>${gbp(calc.gc.vat)}</td><td>${gbp(calc.gc.inc)}</td></tr>`;
-  if (calc.waste) html += `<tr><td>Waste removal</td><td>${gbp(calc.waste.ex)}</td><td>${gbp(calc.waste.vat)}</td><td>${gbp(calc.waste.inc)}</td></tr>`;
-  if (calc.roboPlan) html += `<tr><td>RoboScape service plan</td><td>${gbp(calc.roboPlan.ex)}</td><td>${gbp(calc.roboPlan.vat)}</td><td>${gbp(calc.roboPlan.inc)}</td></tr>`;
-  html += `<tr class="total-row"><td>Total monthly DD</td><td>${gbp(calc.monthlyDD.ex)}</td><td>${gbp(calc.monthlyDD.vat)}</td><td>${gbp(calc.monthlyDD.inc)}</td></tr>
-      </tbody></table></div>`;
-
-  // One-off card (only if applicable)
-  if (calc.totalOneOff) {
-    html += `<div class="card">
-      <div class="card-title">One-Off Charges</div>
-      <table class="preview-table">
-        <thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead>
-        <tbody>`;
-    if (calc.roboMachine) html += `<tr><td>RoboScape machine</td><td>${gbp(calc.roboMachine.ex)}</td><td>${gbp(calc.roboMachine.vat)}</td><td>${gbp(calc.roboMachine.inc)}</td></tr>`;
-    if (calc.roboInstall) html += `<tr><td>RoboScape installation</td><td>${gbp(calc.roboInstall.ex)}</td><td>${gbp(calc.roboInstall.vat)}</td><td>${gbp(calc.roboInstall.inc)}</td></tr>`;
-    if (calc.oneOff) html += `<tr><td>${calc.oneOff.desc}</td><td>${gbp(calc.oneOff.ex)}</td><td>${gbp(calc.oneOff.vat)}</td><td>${gbp(calc.oneOff.inc)}</td></tr>`;
-    html += `<tr class="total-row"><td>Total one-off</td><td>${gbp(calc.totalOneOff.ex)}</td><td>${gbp(calc.totalOneOff.vat)}</td><td>${gbp(calc.totalOneOff.inc)}</td></tr>
-        </tbody></table>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">One-off charges are payable on completion of works.</div>
-    </div>`;
+  if(c.totalOneOff){
+    h+=`<div class="card"><div class="card-title">One-Off Charges</div><table class="preview-table"><thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead><tbody>`;
+    if(c.roboMachine)h+=`<tr><td>${c.roboModel||'RoboScape machine'}</td><td>${gbp(c.roboMachine.ex)}</td><td>${gbp(c.roboMachine.vat)}</td><td>${gbp(c.roboMachine.inc)}</td></tr>`;
+    if(c.roboInstall)h+=`<tr><td>RoboScape installation</td><td>${gbp(c.roboInstall.ex)}</td><td>${gbp(c.roboInstall.vat)}</td><td>${gbp(c.roboInstall.inc)}</td></tr>`;
+    if(c.oneOff)h+=`<tr><td>${c.oneOff.desc}</td><td>${gbp(c.oneOff.ex)}</td><td>${gbp(c.oneOff.vat)}</td><td>${gbp(c.oneOff.inc)}</td></tr>`;
+    h+=`<tr class="total-row"><td>Total one-off</td><td>${gbp(c.totalOneOff.ex)}</td><td>${gbp(c.totalOneOff.vat)}</td><td>${gbp(c.totalOneOff.inc)}</td></tr></tbody></table><div style="font-size:11px;color:var(--text-muted);margin-top:8px;">One-off charges are payable on completion of works.</div></div>`;
   }
 
-  // Year 1 summary
-  html += `<div class="year-summary">
-    <div class="big">${gbp(calc.yearTotal.inc)}</div>
-    <div class="sub">Year 1 total inc VAT (${gbp(calc.yearTotal.ex)} ex VAT)</div>
-  </div>`;
+  if(cl.notes)h+=`<div class="card"><div class="card-title">Additional Notes</div><p style="font-size:14px;color:var(--text-light);">${cl.notes}</p></div>`;
 
-  // Notes
-  if (client.notes) {
-    html += `<div class="card" style="margin-top:16px;">
-      <div class="card-title">Additional Notes</div>
-      <p style="font-size:14px;color:var(--text-light);">${client.notes}</p>
-    </div>`;
-  }
+  h+=`<div class="card"><div class="card-title">Terms &amp; Next Steps</div><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; This quote is valid for 30 days from the date above.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; Services are subject to a minimum 12-month agreement.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; Monthly payments are collected by Direct Debit.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; To accept this proposal, please contact Owen Duddy.</p></div>`;
 
-  document.getElementById('previewContent').innerHTML = html;
+  document.getElementById('previewContent').innerHTML=h;
 }
 
-// ── PDF GENERATION ───────────────────────────────
-function downloadPDF() {
-  const calc = calculate();
-  const svc = getServices();
-  const client = getClientData();
-  const ref = getQuoteRef();
-
-  let html = `<div class="pdf-page">
-    <div class="pdf-header">
-      <h1>Armstrong Garden Care</h1>
-      <p>Professional Garden Maintenance · Edinburgh &amp; Lothians</p>
-    </div>
-    <div class="pdf-meta">
-      <div class="pdf-meta-block">
-        <h3>Prepared For</h3>
-        <p><strong>${client.fullName}</strong></p>
-        <p>${client.address}</p>
-        <p>${client.email}</p>
-      </div>
-      <div class="pdf-meta-block" style="text-align:right;">
-        <h3>Quote Details</h3>
-        <p><strong>${ref}</strong></p>
-        <p>Date: ${todayFormatted()}</p>
-        <p>Start: ${client.startDate}</p>
-        <p style="margin-top:8px;"><strong>On behalf of:</strong> Owen Duddy</p>
-      </div>
-    </div>
-    <div class="pdf-intro">
-      Armstrong Garden Care delivers structured, professional maintenance programmes — designed around your garden, not a generic schedule. The following sets out your tailored service, what is and isn't included, and your monthly investment.
-    </div>
-
-    <div class="pdf-section-title">Scope of Service</div>
-    <div class="pdf-scope">
-      <div class="pdf-scope-col included">
-        <h4>Included in Your Service</h4>
-        ${svc.included.map(s => `<div class="pdf-scope-item">✓ ${s}</div>`).join('')}
-        <div class="pdf-scope-item" style="margin-top:8px;font-style:italic;color:#7aa832;">${calc.visits} visits per year</div>
-      </div>
-      <div class="pdf-scope-col excluded">
-        <h4>Not Included</h4>
-        ${svc.excluded.map(s => `<div class="pdf-scope-item">✗ ${s}<br><span class="note">Available as a separate one-off — ask us for a quote.</span></div>`).join('')}
-      </div>
-    </div>
-
-    <div class="pdf-section-title">Your Investment — Monthly Direct Debit</div>
-    <table class="pdf-table">
-      <thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead>
-      <tbody>
-        <tr><td>Garden maintenance</td><td>${gbp(calc.gc.ex)}</td><td>${gbp(calc.gc.vat)}</td><td>${gbp(calc.gc.inc)}</td></tr>`;
-  if (calc.waste) html += `<tr><td>Waste removal</td><td>${gbp(calc.waste.ex)}</td><td>${gbp(calc.waste.vat)}</td><td>${gbp(calc.waste.inc)}</td></tr>`;
-  if (calc.roboPlan) html += `<tr><td>RoboScape service plan</td><td>${gbp(calc.roboPlan.ex)}</td><td>${gbp(calc.roboPlan.vat)}</td><td>${gbp(calc.roboPlan.inc)}</td></tr>`;
-  html += `<tr class="total"><td>Total monthly DD</td><td>${gbp(calc.monthlyDD.ex)}</td><td>${gbp(calc.monthlyDD.vat)}</td><td>${gbp(calc.monthlyDD.inc)}</td></tr>
-      </tbody></table>`;
-
-  if (calc.totalOneOff) {
-    html += `<div class="pdf-section-title">One-Off Charges (payable on completion)</div>
-      <table class="pdf-table">
-        <thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead>
-        <tbody>`;
-    if (calc.roboMachine) html += `<tr><td>RoboScape machine (${calc.roboModel || 'TBC'})</td><td>${gbp(calc.roboMachine.ex)}</td><td>${gbp(calc.roboMachine.vat)}</td><td>${gbp(calc.roboMachine.inc)}</td></tr>`;
-    if (calc.roboInstall) html += `<tr><td>RoboScape installation</td><td>${gbp(calc.roboInstall.ex)}</td><td>${gbp(calc.roboInstall.vat)}</td><td>${gbp(calc.roboInstall.inc)}</td></tr>`;
-    if (calc.oneOff) html += `<tr><td>${calc.oneOff.desc}</td><td>${gbp(calc.oneOff.ex)}</td><td>${gbp(calc.oneOff.vat)}</td><td>${gbp(calc.oneOff.inc)}</td></tr>`;
-    html += `<tr class="total"><td>Total one-off</td><td>${gbp(calc.totalOneOff.ex)}</td><td>${gbp(calc.totalOneOff.vat)}</td><td>${gbp(calc.totalOneOff.inc)}</td></tr>
-        </tbody></table>`;
-  }
-
-  html += `<div class="pdf-year-box">
-      <div class="big">${gbp(calc.yearTotal.inc)}</div>
-      <div class="sub">Year 1 total inc VAT · ${gbp(calc.yearTotal.ex)} ex VAT</div>
-    </div>`;
-
-  if (client.notes) {
-    html += `<div class="pdf-notes"><strong>Additional Notes:</strong> ${client.notes}</div>`;
-  }
-
-  html += `<div class="pdf-terms">
-      <p><strong>Terms &amp; Next Steps</strong></p>
-      <p>• This quote is valid for 30 days from the date above.</p>
-      <p>• Services are subject to a minimum 12-month agreement.</p>
-      <p>• Monthly payments are collected by Direct Debit.</p>
-      <p>• To accept this proposal, please contact Owen Duddy.</p>
-    </div>
-    <div class="pdf-footer">
-      Armstrong Garden Care · armstronggardencare.co.uk
-    </div>
-  </div>`;
-
-  const pdfEl = document.getElementById('pdfContent');
-  pdfEl.innerHTML = html;
-  pdfEl.classList.add('rendering');
-
-  const opt = {
-    margin: 0,
-    filename: ref + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['avoid-all'] }
-  };
-
-  html2pdf().set(opt).from(pdfEl.firstElementChild).save().then(() => {
-    pdfEl.classList.remove('rendering');
-    pdfEl.innerHTML = '';
-  });
-}
+function printPDF(){window.print();}
 </script>
 </body>
 </html>
