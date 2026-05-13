@@ -23,154 +23,127 @@
     --radius: 12px;
     --radius-sm: 8px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; min-height: 100vh; }
-
-  .header { background: var(--white); border-bottom: 3px solid var(--green); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .header-brand h1 { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--dark); text-transform: uppercase; }
-  .header-brand p { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 1px; }
-  .admin-toggle { width: 36px; height: 36px; border: none; background: var(--bg); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-muted); transition: all 0.2s; }
-  .admin-toggle:hover { background: var(--green-light); color: var(--green-dark); }
-  .admin-toggle.active { background: var(--green); color: var(--white); }
-
-  .admin-panel { max-height: 0; overflow: hidden; background: #fafafa; border-bottom: 1px solid var(--border); transition: max-height 0.3s ease; }
-  .admin-panel.open { max-height: 600px; }
-  .admin-inner { padding: 20px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-  .admin-inner h3 { grid-column: 1 / -1; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-  .admin-field label { display: block; font-size: 12px; color: var(--text-light); margin-bottom: 4px; }
-  .admin-field input { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; }
-  .admin-actions { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; }
-  .admin-actions button { padding: 8px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
-  .btn-save { background: var(--green); color: var(--white); }
-  .btn-save:hover { background: var(--green-dark); }
-  .btn-reset { background: var(--bg); color: var(--text-light); border: 1px solid var(--border) !important; }
-  .saved-msg { font-size: 12px; color: var(--green-dark); opacity: 0; transition: opacity 0.3s; }
-  .saved-msg.show { opacity: 1; }
-
-  .progress-bar { display: flex; justify-content: center; padding: 20px 24px 0; gap: 8px; }
-  .progress-step { display: flex; align-items: center; gap: 8px; }
-  .step-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid var(--border); color: var(--text-muted); background: var(--white); transition: all 0.3s; }
-  .step-dot.active { border-color: var(--green); background: var(--green); color: var(--white); }
-  .step-dot.done { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
-  .step-label { font-size: 12px; color: var(--text-muted); display: none; }
-  .step-line { width: 40px; height: 2px; background: var(--border); }
-  .step-line.done { background: var(--green); }
-  @media(min-width:600px) { .step-label { display: block; } }
-
-  .container { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
-  .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 24px; margin-bottom: 16px; }
-  .card-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--green-light); }
-
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
-  .field input[type="text"], .field input[type="email"], .field input[type="date"], .field input[type="number"], .field textarea, .field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--white); transition: border-color 0.2s; }
-  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(149,192,61,0.15); }
-  .field textarea { resize: vertical; min-height: 70px; }
-  .field .error-text { font-size: 12px; color: var(--red); margin-top: 3px; display: none; }
-  .field.has-error input, .field.has-error textarea, .field.has-error select { border-color: var(--red); background: var(--red-light); }
-  .field.has-error .error-text { display: block; }
-  .field .hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
-
-  .autofill-box { background: var(--green-light); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-  .autofill-label { font-size: 13px; color: var(--text-light); }
-  .autofill-value { font-size: 18px; font-weight: 700; color: var(--green-dark); }
-
-  .stepper { display: flex; align-items: center; }
-  .stepper button { width: 40px; height: 40px; border: 1px solid var(--border); background: var(--bg); font-size: 18px; font-weight: 700; cursor: pointer; color: var(--text); transition: all 0.2s; }
-  .stepper button:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
-  .stepper button:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-  .stepper button:hover { background: var(--green-light); }
-  .stepper input { width: 60px; text-align: center; border: 1px solid var(--border); border-left: none; border-right: none; height: 40px; font-size: 15px; font-weight: 600; border-radius: 0; }
-  .stepper input:focus { outline: none; }
-
-  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-  .toggle-row:last-child { border-bottom: none; }
-  .toggle-label { font-size: 14px; color: var(--text); }
-  .toggle { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
-  .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 28px; transition: 0.3s; }
-  .toggle .slider:before { content: ""; position: absolute; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: var(--shadow-sm); }
-  .toggle input:checked + .slider { background: var(--green); }
-  .toggle input:checked + .slider:before { transform: translateX(20px); }
-
-  .live-estimate { background: var(--green-light); border-radius: var(--radius-sm); padding: 14px 16px; text-align: center; margin-top: 8px; }
-  .live-estimate .amount { font-size: 28px; font-weight: 800; color: var(--green-dark); }
-  .live-estimate .label { font-size: 12px; color: var(--text-light); }
-
-  .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
-  .btn-primary { background: var(--green); color: var(--white); width: 100%; }
-  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-  .btn-secondary { background: var(--white); color: var(--text); border: 1px solid var(--border); width: 100%; }
-  .btn-secondary:hover { background: var(--bg); }
-  .btn-group { display: flex; gap: 10px; margin-top: 16px; }
-  .btn-group .btn { flex: 1; }
-
-  .collapsible { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s; opacity: 0; }
-  .collapsible.open { max-height: 1000px; opacity: 1; }
-
-  .step { display: none; animation: fadeIn 0.3s ease; }
-  .step.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  .preview-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  .preview-table th { text-align: left; padding: 8px 10px; background: var(--bg); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border); }
-  .preview-table th:not(:first-child) { text-align: right; }
-  .preview-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; }
-  .preview-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
-  .preview-table tr.total-row td { font-weight: 700; border-top: 2px solid var(--dark); border-bottom: none; background: #fafafa; }
-
-  .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media(max-width: 500px) { .scope-grid { grid-template-columns: 1fr; } }
-  .scope-col { border-radius: var(--radius-sm); padding: 16px; }
-  .scope-included { background: var(--green-light); }
-  .scope-excluded { background: #f5f5f5; }
-  .scope-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; padding-bottom: 6px; }
-  .scope-included h4 { color: var(--green-dark); border-bottom: 2px solid var(--green); }
-  .scope-excluded h4 { color: var(--text-muted); border-bottom: 2px solid #ddd; }
-  .scope-item { font-size: 13px; padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; }
-  .scope-item .tick { color: var(--green-dark); font-weight: 700; }
-  .scope-item .cross { color: #bbb; }
-  .scope-item .upsell { font-size: 11px; color: var(--text-muted); font-style: italic; display: block; }
-
-  .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-  .info-row:last-child { border-bottom: none; }
-  .info-label { color: var(--text-light); }
-  .info-value { font-weight: 600; }
-
-  /* PDF header — hidden on screen, visible in print */
-  .pdf-print-header { display: none; }
-  .pdf-print-header h1 { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #262626; text-transform: uppercase; margin: 0; }
-  .pdf-print-header .tagline { font-size: 10px; color: #888; letter-spacing: 0.5px; margin: 2px 0 10px; }
-  .pdf-print-header .accent { height: 3px; background: #95c03d; margin-bottom: 16px; }
-  .pdf-print-footer { display: none; margin-top: 24px; padding-top: 12px; border-top: 2px solid #95c03d; font-size: 9px; color: #aaa; text-align: center; }
-
-  /* ── PRINT STYLES ───────────────── */
-  @media print {
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-    body { background: white !important; margin: 0; padding: 0; font-size: 11pt; }
-    .header, .admin-panel, .progress-bar, .btn-group, .no-print { display: none !important; }
-    .container { max-width: 100%; padding: 10mm 15mm; margin: 0; }
-    .step { display: none !important; }
-    #step3 { display: block !important; }
-    .card { box-shadow: none !important; border: 1px solid #e0e0e0; break-inside: avoid; page-break-inside: avoid; margin-bottom: 10px; padding: 14px 16px; border-radius: 6px; }
-    .card-title { font-size: 13px; margin-bottom: 10px; padding-bottom: 6px; }
-    .pdf-print-header { display: block !important; }
-    .pdf-print-footer { display: block !important; }
-    .scope-included { background: #e8f3d0 !important; }
-    .scope-excluded { background: #f5f5f5 !important; }
-    .preview-table tr.total-row td { background: #fafafa !important; }
-    .preview-table th { background: #f3f4f6 !important; }
-    .live-estimate { display: none; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;}
+  .header{background:var(--white);border-bottom:3px solid var(--green);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .header-brand h1{font-size:20px;font-weight:800;letter-spacing:2px;color:var(--dark);text-transform:uppercase;}
+  .header-brand p{font-size:11px;color:var(--text-muted);letter-spacing:0.5px;margin-top:1px;}
+  .admin-toggle{width:36px;height:36px;border:none;background:var(--bg);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text-muted);transition:all 0.2s;}
+  .admin-toggle:hover{background:var(--green-light);color:var(--green-dark);}
+  .admin-toggle.active{background:var(--green);color:var(--white);}
+  .admin-panel{max-height:0;overflow:hidden;background:#fafafa;border-bottom:1px solid var(--border);transition:max-height 0.3s ease;}
+  .admin-panel.open{max-height:600px;}
+  .admin-inner{padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+  .admin-inner h3{grid-column:1/-1;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);border-bottom:1px solid var(--border);padding-bottom:8px;}
+  .admin-field label{display:block;font-size:12px;color:var(--text-light);margin-bottom:4px;}
+  .admin-field input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;}
+  .admin-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center;}
+  .admin-actions button{padding:8px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
+  .btn-save{background:var(--green);color:var(--white);}.btn-save:hover{background:var(--green-dark);}
+  .btn-reset{background:var(--bg);color:var(--text-light);border:1px solid var(--border)!important;}
+  .saved-msg{font-size:12px;color:var(--green-dark);opacity:0;transition:opacity 0.3s;}.saved-msg.show{opacity:1;}
+  .progress-bar{display:flex;justify-content:center;padding:20px 24px 0;gap:8px;}
+  .progress-step{display:flex;align-items:center;gap:8px;}
+  .step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border:2px solid var(--border);color:var(--text-muted);background:var(--white);transition:all 0.3s;}
+  .step-dot.active{border-color:var(--green);background:var(--green);color:var(--white);}
+  .step-dot.done{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+  .step-label{font-size:12px;color:var(--text-muted);display:none;}
+  .step-line{width:40px;height:2px;background:var(--border);}.step-line.done{background:var(--green);}
+  @media(min-width:600px){.step-label{display:block;}}
+  .container{max-width:720px;margin:0 auto;padding:20px 16px 40px;}
+  .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:24px;margin-bottom:16px;}
+  .card-title{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--green-light);}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px;}
+  .field input[type="text"],.field input[type="email"],.field input[type="date"],.field input[type="number"],.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:inherit;background:var(--white);transition:border-color 0.2s;}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(149,192,61,0.15);}
+  .field textarea{resize:vertical;min-height:100px;}
+  .field .error-text{font-size:12px;color:var(--red);margin-top:3px;display:none;}
+  .field.has-error input,.field.has-error textarea,.field.has-error select{border-color:var(--red);background:var(--red-light);}
+  .field.has-error .error-text{display:block;}
+  .field .hint{font-size:11px;color:var(--text-muted);margin-top:3px;}
+  .autofill-box{background:var(--green-light);border-radius:var(--radius-sm);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+  .autofill-label{font-size:13px;color:var(--text-light);}.autofill-value{font-size:18px;font-weight:700;color:var(--green-dark);}
+  .stepper{display:flex;align-items:center;}
+  .stepper button{width:40px;height:40px;border:1px solid var(--border);background:var(--bg);font-size:18px;font-weight:700;cursor:pointer;color:var(--text);transition:all 0.2s;}
+  .stepper button:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm);}
+  .stepper button:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0;}
+  .stepper button:hover{background:var(--green-light);}
+  .stepper input{width:60px;text-align:center;border:1px solid var(--border);border-left:none;border-right:none;height:40px;font-size:15px;font-weight:600;border-radius:0;}
+  .stepper input:focus{outline:none;}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0;}
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-label{font-size:14px;color:var(--text);}
+  .toggle{position:relative;width:48px;height:28px;flex-shrink:0;}
+  .toggle input{opacity:0;width:0;height:0;}
+  .toggle .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:28px;transition:0.3s;}
+  .toggle .slider:before{content:"";position:absolute;height:22px;width:22px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s;box-shadow:var(--shadow-sm);}
+  .toggle input:checked+.slider{background:var(--green);}
+  .toggle input:checked+.slider:before{transform:translateX(20px);}
+  .live-estimate{background:var(--green-light);border-radius:var(--radius-sm);padding:14px 16px;text-align:center;margin-top:8px;}
+  .live-estimate .amount{font-size:28px;font-weight:800;color:var(--green-dark);}
+  .live-estimate .label{font-size:12px;color:var(--text-light);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.5px;}
+  .btn-primary{background:var(--green);color:var(--white);width:100%;}.btn-primary:hover{background:var(--green-dark);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .btn-secondary{background:var(--white);color:var(--text);border:1px solid var(--border);width:100%;}.btn-secondary:hover{background:var(--bg);}
+  .btn-group{display:flex;gap:10px;margin-top:16px;}.btn-group .btn{flex:1;}
+  .collapsible{max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;}.collapsible.open{max-height:1000px;opacity:1;}
+  .step{display:none;animation:fadeIn 0.3s ease;}.step.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .preview-table{width:100%;border-collapse:collapse;font-size:14px;}
+  .preview-table th{text-align:left;padding:8px 10px;background:var(--bg);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);border-bottom:2px solid var(--border);}
+  .preview-table th:not(:first-child){text-align:right;}
+  .preview-table td{padding:10px;border-bottom:1px solid #f0f0f0;}
+  .preview-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;}
+  .preview-table tr.total-row td{font-weight:700;border-top:2px solid var(--dark);border-bottom:none;background:#fafafa;}
+  .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:500px){.scope-grid{grid-template-columns:1fr;}}
+  .scope-col{border-radius:var(--radius-sm);padding:16px;}
+  .scope-included{background:var(--green-light);}.scope-excluded{background:#f5f5f5;}
+  .scope-col h4{font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:6px;}
+  .scope-included h4{color:var(--green-dark);border-bottom:2px solid var(--green);}
+  .scope-excluded h4{color:var(--text-muted);border-bottom:2px solid #ddd;}
+  .scope-item{font-size:13px;padding:4px 0;display:flex;align-items:flex-start;gap:6px;}
+  .scope-item .tick{color:var(--green-dark);font-weight:700;}.scope-item .cross{color:#bbb;}
+  .scope-item .upsell{font-size:11px;color:var(--text-muted);font-style:italic;display:block;}
+  .info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
+  .info-row:last-child{border-bottom:none;}
+  .info-label{color:var(--text-light);}.info-value{font-weight:600;}
+  .type-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+  @media(max-width:500px){.type-selector{grid-template-columns:1fr;}}
+  .type-card{border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);}
+  .type-card:hover{border-color:var(--green);background:var(--green-light);}
+  .type-card.selected{border-color:var(--green);background:var(--green-light);box-shadow:0 0 0 3px rgba(149,192,61,0.2);}
+  .type-card .type-icon{font-size:32px;margin-bottom:8px;}
+  .type-card .type-name{font-size:16px;font-weight:700;color:var(--dark);}
+  .type-card .type-desc{font-size:12px;color:var(--text-light);margin-top:4px;}
+  .pdf-print-header{display:none;}
+  .pdf-print-header h1{font-size:22px;font-weight:800;letter-spacing:3px;color:#262626;text-transform:uppercase;margin:0;}
+  .pdf-print-header .tagline{font-size:10px;color:#888;letter-spacing:0.5px;margin:2px 0 10px;}
+  .pdf-print-header .accent{height:3px;background:#95c03d;margin-bottom:16px;}
+  .pdf-print-footer{display:none;margin-top:24px;padding-top:12px;border-top:2px solid #95c03d;font-size:9px;color:#aaa;text-align:center;}
+  @media print{
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;}
+    body{background:white!important;margin:0;padding:0;font-size:11pt;}
+    .header,.admin-panel,.progress-bar,.btn-group,.no-print{display:none!important;}
+    .container{max-width:100%;padding:10mm 15mm;margin:0;}
+    .step{display:none!important;}
+    .step.print-target{display:block!important;}
+    .card{box-shadow:none!important;border:1px solid #e0e0e0;break-inside:avoid;page-break-inside:avoid;margin-bottom:10px;padding:14px 16px;border-radius:6px;}
+    .card-title{font-size:13px;margin-bottom:10px;padding-bottom:6px;}
+    .pdf-print-header{display:block!important;}
+    .pdf-print-footer{display:block!important;}
+    .scope-included{background:#e8f3d0!important;}.scope-excluded{background:#f5f5f5!important;}
+    .preview-table tr.total-row td{background:#fafafa!important;}
+    .preview-table th{background:#f3f4f6!important;}
+    .live-estimate{display:none;}
   }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-brand">
-    <h1>Armstrong Garden Care</h1>
-    <p>Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p>
-  </div>
+  <div class="header-brand"><h1>Armstrong Garden Care</h1><p>Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p></div>
   <button class="admin-toggle" id="adminToggle" title="Admin Settings">&#9881;</button>
 </div>
 
@@ -183,25 +156,60 @@
     <div class="admin-field"><label>VAT rate (%)</label><input type="number" id="admVAT" step="1" min="0" max="100"></div>
     <div class="admin-field"><label>Service plan Tier 1 (monthly)</label><input type="number" id="admTier1" step="0.01" min="0"></div>
     <div class="admin-field"><label>Service plan Tier 2 (monthly)</label><input type="number" id="admTier2" step="0.01" min="0"></div>
-    <div class="admin-actions">
-      <button class="btn-save" onclick="saveAdmin()">Save Settings</button>
-      <button class="btn-reset" onclick="resetAdmin()">Reset to Defaults</button>
-      <span class="saved-msg" id="savedMsg">&#10003; Settings saved</span>
-    </div>
+    <div class="admin-actions"><button class="btn-save" onclick="saveAdmin()">Save Settings</button><button class="btn-reset" onclick="resetAdmin()">Reset to Defaults</button><span class="saved-msg" id="savedMsg">&#10003; Settings saved</span></div>
   </div>
 </div>
 
-<div class="progress-bar">
-  <div class="progress-step"><div class="step-dot active" id="dot1">1</div><span class="step-label">Details</span></div>
+<div class="progress-bar" id="progressBar">
+  <div class="progress-step"><div class="step-dot active" id="dot1">1</div><span class="step-label" id="label1">Type</span></div>
   <div class="step-line" id="line1"></div>
-  <div class="progress-step"><div class="step-dot" id="dot2">2</div><span class="step-label">Services</span></div>
+  <div class="progress-step"><div class="step-dot" id="dot2">2</div><span class="step-label" id="label2">Details</span></div>
   <div class="step-line" id="line2"></div>
-  <div class="progress-step"><div class="step-dot" id="dot3">3</div><span class="step-label">Quote</span></div>
+  <div class="progress-step"><div class="step-dot" id="dot3">3</div><span class="step-label" id="label3">Quote</span></div>
 </div>
 
 <div class="container">
 
-<div class="step active" id="step1">
+<!-- STEP 0: TYPE SELECTOR -->
+<div class="step active" id="step0">
+  <div class="card">
+    <div class="card-title">What type of quote is this?</div>
+    <div class="type-selector">
+      <div class="type-card" id="typeRecurring" onclick="selectType('recurring')"><div class="type-icon">&#128260;</div><div class="type-name">Recurring Maintenance</div><div class="type-desc">Monthly service plan with regular visits and Direct Debit</div></div>
+      <div class="type-card" id="typeOneOff" onclick="selectType('oneoff')"><div class="type-icon">&#128736;</div><div class="type-name">One-Off Works</div><div class="type-desc">Single job quote for a specific piece of work</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ONE-OFF: INPUT -->
+<div class="step" id="stepOO1">
+  <div class="card">
+    <div class="card-title">Client Details</div>
+    <div class="field"><label>First Name *</label><input type="text" id="oo_firstName" placeholder="e.g. John"><div class="error-text">First name is required</div></div>
+    <div class="field"><label>Last Name *</label><input type="text" id="oo_lastName" placeholder="e.g. Smith"><div class="error-text">Last name is required</div></div>
+    <div class="field"><label>Email Address *</label><input type="email" id="oo_email" placeholder="e.g. john@email.com"><div class="error-text">Valid email is required</div></div>
+    <div class="field"><label>Property Address *</label><input type="text" id="oo_address" placeholder="e.g. 12 Garden Lane, Edinburgh EH4 1AB"><div class="error-text">Property address is required</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Description of Works</div>
+    <div class="field"><label>What work is being quoted for? *</label><textarea id="oo_desc" placeholder="e.g. Full garden tidy including hedge cutting (x3 hedges, approx 15m total), border clearance, lawn edging, and removal of all green waste." maxlength="2000"></textarea><div class="error-text">Description is required</div><div class="hint">Be detailed. This text appears on the client's quote.</div></div>
+    <div class="field"><label>Quote Amount (&pound; ex VAT) *</label><input type="number" id="oo_amount" step="0.01" min="0.01" placeholder="e.g. 450.00"><div class="error-text">Amount is required</div></div>
+    <div class="field"><label>Estimated Completion</label><input type="text" id="oo_timeline" placeholder="e.g. 2 days, Within 2 weeks of acceptance"><div class="hint">Optional. Shown on the quote if provided.</div></div>
+    <div class="field"><label>Additional Notes</label><textarea id="oo_notes" placeholder="Any extra notes, access requirements, exclusions..." maxlength="500" style="min-height:60px;"></textarea></div>
+  </div>
+  <div class="btn-group"><button class="btn btn-secondary" onclick="goStep(0)">Back</button><button class="btn btn-primary" onclick="goOOPreview()">Generate Quote</button></div>
+</div>
+
+<!-- ONE-OFF: PREVIEW -->
+<div class="step" id="stepOO2">
+  <div class="pdf-print-header"><h1>Armstrong Garden Care</h1><p class="tagline">Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p><div class="accent"></div></div>
+  <div id="ooPreview"></div>
+  <div class="pdf-print-footer">Armstrong Garden Care &middot; armstronggardencare.co.uk</div>
+  <div class="btn-group no-print"><button class="btn btn-secondary" onclick="goOOEdit()">Edit Quote</button><button class="btn btn-primary" onclick="doPrint('stepOO2')">Download PDF</button></div>
+</div>
+
+<!-- RECURRING: CLIENT DETAILS -->
+<div class="step" id="step1">
   <div class="card">
     <div class="card-title">Client Details</div>
     <div class="field"><label>First Name *</label><input type="text" id="firstName" placeholder="e.g. John"><div class="error-text">First name is required</div></div>
@@ -210,104 +218,42 @@
     <div class="field"><label>Property Address *</label><input type="text" id="address" placeholder="e.g. 12 Garden Lane, Edinburgh EH4 1AB"><div class="error-text">Property address is required</div></div>
     <div class="field"><label>Service Start Date</label><input type="date" id="startDate"><div class="hint">Leave blank for TBC</div></div>
   </div>
-  <button class="btn btn-primary" onclick="goStep(2)">Next &mdash; Configure Services</button>
+  <div class="btn-group"><button class="btn btn-secondary" onclick="goStep(0)">Back</button><button class="btn btn-primary" onclick="goStep(2)">Next &mdash; Configure Services</button></div>
 </div>
 
+<!-- RECURRING: SERVICES -->
 <div class="step" id="step2">
   <div class="card">
     <div class="card-title">Service Specification</div>
-    <div class="field">
-      <label>Hours Per Visit</label>
-      <div class="stepper"><button onclick="stepVal('hoursVal',-0.5)">&minus;</button><input type="number" id="hoursVal" value="2" step="0.5" min="0.5" max="8" readonly><button onclick="stepVal('hoursVal',0.5)">+</button></div>
-      <div class="hint">Internal only &mdash; not shown to client</div>
-    </div>
-    <div class="field">
-      <label>Total Visits Per Year</label>
-      <div class="stepper"><button onclick="stepVal('visitsVal',-1)">&minus;</button><input type="number" id="visitsVal" value="26" step="1" min="1" max="52" readonly><button onclick="stepVal('visitsVal',1)">+</button></div>
-    </div>
+    <div class="field"><label>Hours Per Visit</label><div class="stepper"><button onclick="stepVal('hoursVal',-0.5)">&minus;</button><input type="number" id="hoursVal" value="2" step="0.5" min="0.5" max="8" readonly><button onclick="stepVal('hoursVal',0.5)">+</button></div><div class="hint">Internal only &mdash; not shown to client</div></div>
+    <div class="field"><label>Total Visits Per Year</label><div class="stepper"><button onclick="stepVal('visitsVal',-1)">&minus;</button><input type="number" id="visitsVal" value="26" step="1" min="1" max="52" readonly><button onclick="stepVal('visitsVal',1)">+</button></div></div>
     <div class="toggle-row"><span class="toggle-label">Lawn Included</span><label class="toggle"><input type="checkbox" id="lawnToggle" checked onchange="syncServices()"><span class="slider"></span></label></div>
     <div class="toggle-row"><span class="toggle-label">Waste Removal Included</span><label class="toggle"><input type="checkbox" id="wasteToggle" checked onchange="syncServices()"><span class="slider"></span></label></div>
-    <div class="live-estimate">
-      <div class="label">Estimated monthly garden care</div>
-      <div class="amount" id="liveEstimate">&pound;0.00</div>
-      <div class="label">ex VAT</div>
-    </div>
+    <div class="live-estimate"><div class="label">Estimated monthly garden care</div><div class="amount" id="liveEstimate">&pound;0.00</div><div class="label">ex VAT</div></div>
   </div>
-
   <div class="card"><div class="card-title">Bespoke Services</div><div id="serviceToggles"></div></div>
-
-  <div class="card">
-    <div class="card-title">One-Off Works</div>
-    <div class="field"><label>Description</label><input type="text" id="oneOffDesc" placeholder="e.g. Driveway power wash"></div>
-    <div class="field"><label>Value (&pound; ex VAT)</label><input type="number" id="oneOffValue" step="0.01" min="0" placeholder="0.00"></div>
-  </div>
-
+  <div class="card"><div class="card-title">One-Off Works</div><div class="field"><label>Description</label><input type="text" id="oneOffDesc" placeholder="e.g. Driveway power wash"></div><div class="field"><label>Value (&pound; ex VAT)</label><input type="number" id="oneOffValue" step="0.01" min="0" placeholder="0.00"></div></div>
   <div class="card">
     <div class="card-title">RoboScape Add-On</div>
     <div class="toggle-row"><span class="toggle-label" style="font-weight:600;">Include RoboScape?</span><label class="toggle"><input type="checkbox" id="roboToggle" onchange="toggleRobo()"><span class="slider"></span></label></div>
     <div class="collapsible" id="roboSection">
-      <div class="field" style="margin-top:14px;">
-        <label>Machine Model</label>
-        <select id="roboModel" onchange="onModelSelect()">
-          <option value="">-- Select a model --</option>
-          <optgroup label="i Series (Entry Level)">
-            <option value="i108E" data-price="899" data-coverage="800">i108E &mdash; up to 800m&sup2;</option>
-            <option value="i210E AWD" data-price="1099" data-coverage="1000">i210E AWD &mdash; up to 1,000m&sup2;</option>
-          </optgroup>
-          <optgroup label="H2 Series (Premium LiDAR)">
-            <option value="H206E" data-price="1499" data-coverage="500">H206E &mdash; up to 500m&sup2;</option>
-            <option value="H210E" data-price="1699" data-coverage="1000">H210E &mdash; up to 1,000m&sup2;</option>
-            <option value="H215E" data-price="1999" data-coverage="1500">H215E &mdash; up to 1,500m&sup2;</option>
-            <option value="H230E" data-price="2299" data-coverage="3000">H230E &mdash; up to 3,000m&sup2;</option>
-          </optgroup>
-          <optgroup label="X4 Series (4WD Premium)">
-            <option value="X420E" data-price="2199" data-coverage="2000">X420E &mdash; up to 2,000m&sup2;</option>
-            <option value="X430E" data-price="2499" data-coverage="3000">X430E &mdash; up to 3,000m&sup2;</option>
-            <option value="X450E" data-price="2799" data-coverage="5000">X450E &mdash; up to 5,000m&sup2;</option>
-          </optgroup>
-        </select>
-      </div>
-      <div class="autofill-box" id="machinePrice" style="display:none;">
-        <span class="autofill-label">Machine cost (ex VAT)</span>
-        <span class="autofill-value" id="machinePriceVal">&pound;0.00</span>
-      </div>
+      <div class="field" style="margin-top:14px;"><label>Machine Model</label><select id="roboModel" onchange="onModelSelect()"><option value="">-- Select a model --</option><optgroup label="i Series (Entry Level)"><option value="i108E" data-price="899">i108E &mdash; up to 800m&sup2;</option><option value="i210E AWD" data-price="1099">i210E AWD &mdash; up to 1,000m&sup2;</option></optgroup><optgroup label="H2 Series (Premium LiDAR)"><option value="H206E" data-price="1499">H206E &mdash; up to 500m&sup2;</option><option value="H210E" data-price="1699">H210E &mdash; up to 1,000m&sup2;</option><option value="H215E" data-price="1999">H215E &mdash; up to 1,500m&sup2;</option><option value="H230E" data-price="2299">H230E &mdash; up to 3,000m&sup2;</option></optgroup><optgroup label="X4 Series (4WD Premium)"><option value="X420E" data-price="2199">X420E &mdash; up to 2,000m&sup2;</option><option value="X430E" data-price="2499">X430E &mdash; up to 3,000m&sup2;</option><option value="X450E" data-price="2799">X450E &mdash; up to 5,000m&sup2;</option></optgroup></select></div>
+      <div class="autofill-box" id="machinePrice" style="display:none;"><span class="autofill-label">Machine cost (ex VAT)</span><span class="autofill-value" id="machinePriceVal">&pound;0.00</span></div>
       <input type="hidden" id="roboCost" value="0">
-      <div class="field" style="margin-top:14px;">
-        <label>Service Plan Tier</label>
-        <select id="roboTier">
-          <option value="none">None</option>
-          <option value="tier1">Tier 1 &mdash; &pound;19.99/mo</option>
-          <option value="tier2">Tier 2 &mdash; &pound;29.99/mo</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Install Fee (&pound; ex VAT)</label>
-        <input type="number" id="roboInstall" step="0.01" min="0">
-        <div class="hint">Pre-filled from admin defaults. Editable per quote.</div>
-      </div>
+      <div class="field" style="margin-top:14px;"><label>Service Plan Tier</label><select id="roboTier"><option value="none">None</option><option value="tier1">Tier 1 &mdash; &pound;19.99/mo</option><option value="tier2">Tier 2 &mdash; &pound;29.99/mo</option></select></div>
+      <div class="field"><label>Install Fee (&pound; ex VAT)</label><input type="number" id="roboInstall" step="0.01" min="0"><div class="hint">Pre-filled from admin defaults. Editable per quote.</div></div>
     </div>
   </div>
-
   <div class="card"><div class="card-title">Additional Notes</div><div class="field" style="margin-bottom:0;"><textarea id="additionalNotes" placeholder="Any extra notes for this quote..." maxlength="500"></textarea></div></div>
-
-  <div class="btn-group">
-    <button class="btn btn-secondary" onclick="goStep(1)">Back</button>
-    <button class="btn btn-primary" onclick="goStep(3)">Generate Quote</button>
-  </div>
+  <div class="btn-group"><button class="btn btn-secondary" onclick="goStep(1)">Back</button><button class="btn btn-primary" onclick="goStep(3)">Generate Quote</button></div>
 </div>
 
+<!-- RECURRING: PREVIEW -->
 <div class="step" id="step3">
-  <div class="pdf-print-header">
-    <h1>Armstrong Garden Care</h1>
-    <p class="tagline">Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p>
-    <div class="accent"></div>
-  </div>
+  <div class="pdf-print-header"><h1>Armstrong Garden Care</h1><p class="tagline">Professional Garden Maintenance &middot; Edinburgh &amp; Lothians</p><div class="accent"></div></div>
   <div id="previewContent"></div>
   <div class="pdf-print-footer">Armstrong Garden Care &middot; armstronggardencare.co.uk</div>
-  <div class="btn-group no-print">
-    <button class="btn btn-secondary" onclick="goStep(2)">Edit Quote</button>
-    <button class="btn btn-primary" onclick="printPDF()">Download PDF</button>
-  </div>
+  <div class="btn-group no-print"><button class="btn btn-secondary" onclick="goStep(2)">Edit Quote</button><button class="btn btn-primary" onclick="doPrint('step3')">Download PDF</button></div>
 </div>
 
 </div>
@@ -325,78 +271,109 @@ const SERVICES=[
   {id:'svc_greenwaste',label:'Green waste removal',default:true,linkedTo:'wasteToggle'},
 ];
 let admin={...DEFAULTS};
+let quoteType='';
 
 document.addEventListener('DOMContentLoaded',()=>{loadAdmin();renderServiceToggles();updateLiveEstimate();setupLiveListeners();document.getElementById('startDate').setAttribute('min',new Date().toISOString().split('T')[0]);});
 
 function loadAdmin(){try{const s=localStorage.getItem('agc_admin');if(s)admin={...DEFAULTS,...JSON.parse(s)};}catch(e){}document.getElementById('admRate').value=admin.rate;document.getElementById('admWaste').value=admin.waste;document.getElementById('admInstall').value=admin.install;document.getElementById('admVAT').value=admin.vat;document.getElementById('admTier1').value=admin.tier1;document.getElementById('admTier2').value=admin.tier2;document.getElementById('roboInstall').value=admin.install;}
-function saveAdmin(){admin.rate=parseFloat(document.getElementById('admRate').value)||DEFAULTS.rate;admin.waste=parseFloat(document.getElementById('admWaste').value)||DEFAULTS.waste;admin.install=parseFloat(document.getElementById('admInstall').value)||DEFAULTS.install;admin.vat=parseFloat(document.getElementById('admVAT').value)||DEFAULTS.vat;admin.tier1=parseFloat(document.getElementById('admTier1').value)||DEFAULTS.tier1;admin.tier2=parseFloat(document.getElementById('admTier2').value)||DEFAULTS.tier2;try{localStorage.setItem('agc_admin',JSON.stringify(admin));}catch(e){}const m=document.getElementById('savedMsg');m.classList.add('show');setTimeout(()=>m.classList.remove('show'),2000);updateLiveEstimate();}
+function saveAdmin(){admin.rate=+(document.getElementById('admRate').value)||DEFAULTS.rate;admin.waste=+(document.getElementById('admWaste').value)||DEFAULTS.waste;admin.install=+(document.getElementById('admInstall').value)||DEFAULTS.install;admin.vat=+(document.getElementById('admVAT').value)||DEFAULTS.vat;admin.tier1=+(document.getElementById('admTier1').value)||DEFAULTS.tier1;admin.tier2=+(document.getElementById('admTier2').value)||DEFAULTS.tier2;try{localStorage.setItem('agc_admin',JSON.stringify(admin));}catch(e){}const m=document.getElementById('savedMsg');m.classList.add('show');setTimeout(()=>m.classList.remove('show'),2000);updateLiveEstimate();}
 function resetAdmin(){admin={...DEFAULTS};try{localStorage.removeItem('agc_admin');}catch(e){}loadAdmin();updateLiveEstimate();}
 document.getElementById('adminToggle').addEventListener('click',()=>{document.getElementById('adminPanel').classList.toggle('open');document.getElementById('adminToggle').classList.toggle('active');});
 
+function selectType(t){quoteType=t;document.getElementById('typeRecurring').classList.toggle('selected',t==='recurring');document.getElementById('typeOneOff').classList.toggle('selected',t==='oneoff');if(t==='recurring'){document.getElementById('label1').textContent='Details';document.getElementById('label2').textContent='Services';document.getElementById('label3').textContent='Quote';setTimeout(()=>goStep(1),250);}else{document.getElementById('label1').textContent='Details & Works';document.getElementById('label2').textContent='Quote';document.getElementById('label3').textContent='';document.getElementById('dot3').style.opacity='0.3';document.getElementById('line2').style.opacity='0.3';setTimeout(()=>{hideAll();show('stepOO1');updateDots(1);},250);}}
+
 function renderServiceToggles(){document.getElementById('serviceToggles').innerHTML=SERVICES.map(s=>`<div class="toggle-row"><span class="toggle-label">${s.label}</span><label class="toggle"><input type="checkbox" id="${s.id}" ${s.default?'checked':''} ${s.linkedTo?'data-linked="'+s.linkedTo+'"':''}><span class="slider"></span></label></div>`).join('');}
 function syncServices(){const l=document.getElementById('lawnToggle').checked,w=document.getElementById('wasteToggle').checked;const ls=document.getElementById('svc_lawn');if(ls){ls.checked=l;ls.disabled=!l;}const ws=document.getElementById('svc_greenwaste');if(ws){ws.checked=w;ws.disabled=!w;}updateLiveEstimate();}
-function stepVal(id,d){const el=document.getElementById(id);let v=parseFloat(el.value)+d;v=Math.max(parseFloat(el.min),Math.min(parseFloat(el.max),v));el.value=v;updateLiveEstimate();}
+function stepVal(id,d){const el=document.getElementById(id);let v=+(el.value)+d;v=Math.max(+(el.min),Math.min(+(el.max),v));el.value=v;updateLiveEstimate();}
 function setupLiveListeners(){['hoursVal','visitsVal'].forEach(id=>document.getElementById(id).addEventListener('change',updateLiveEstimate));}
-function updateLiveEstimate(){const h=parseFloat(document.getElementById('hoursVal').value)||0,v=parseInt(document.getElementById('visitsVal').value)||0;document.getElementById('liveEstimate').textContent=gbp((h*v*admin.rate)/12);}
+function updateLiveEstimate(){const h=+(document.getElementById('hoursVal').value)||0,v=parseInt(document.getElementById('visitsVal').value)||0;document.getElementById('liveEstimate').textContent=gbp((h*v*admin.rate)/12);}
 function toggleRobo(){const on=document.getElementById('roboToggle').checked;document.getElementById('roboSection').classList.toggle('open',on);if(!on){document.getElementById('roboModel').value='';document.getElementById('roboCost').value=0;document.getElementById('machinePrice').style.display='none';}}
-function onModelSelect(){const sel=document.getElementById('roboModel'),opt=sel.options[sel.selectedIndex],price=parseFloat(opt.getAttribute('data-price'))||0;document.getElementById('roboCost').value=price;const box=document.getElementById('machinePrice'),val=document.getElementById('machinePriceVal');if(price>0){box.style.display='flex';val.textContent=gbp(price);}else{box.style.display='none';}}
+function onModelSelect(){const sel=document.getElementById('roboModel'),opt=sel.options[sel.selectedIndex],p=+(opt.getAttribute('data-price'))||0;document.getElementById('roboCost').value=p;if(p>0){document.getElementById('machinePrice').style.display='flex';document.getElementById('machinePriceVal').textContent=gbp(p);}else{document.getElementById('machinePrice').style.display='none';}}
 
-function goStep(n){if(n===2&&!validateStep1())return;if(n===3)buildPreview();document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById('step'+n).classList.add('active');[1,2,3].forEach(i=>{const d=document.getElementById('dot'+i);d.classList.remove('active','done');if(i<n)d.classList.add('done');if(i===n)d.classList.add('active');});[1,2].forEach(i=>document.getElementById('line'+i).classList.toggle('done',i<n));window.scrollTo({top:0,behavior:'smooth'});}
-function validateStep1(){let ok=true;[{id:'firstName',test:v=>v.trim().length>0},{id:'lastName',test:v=>v.trim().length>0},{id:'email',test:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},{id:'address',test:v=>v.trim().length>0}].forEach(f=>{const el=document.getElementById(f.id),w=el.closest('.field');if(!f.test(el.value)){w.classList.add('has-error');ok=false;}else{w.classList.remove('has-error');}});return ok;}
+function hideAll(){document.querySelectorAll('.step').forEach(s=>{s.classList.remove('active');s.classList.remove('print-target');});}
+function show(id){document.getElementById(id).classList.add('active');}
+function updateDots(cur){[1,2,3].forEach(i=>{const d=document.getElementById('dot'+i);d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});[1,2].forEach(i=>document.getElementById('line'+i).classList.toggle('done',i<cur));}
+
+function goStep(n){
+  if(n===0){quoteType='';document.getElementById('dot3').style.opacity='1';document.getElementById('line2').style.opacity='1';hideAll();show('step0');updateDots(1);return;}
+  if(n===2&&!valFields([{id:'firstName'},{id:'lastName'},{id:'email',email:true},{id:'address'}]))return;
+  if(n===3)buildPreview();
+  hideAll();show(n===1?'step1':n===2?'step2':'step3');updateDots(n);window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goOOEdit(){hideAll();show('stepOO1');updateDots(1);}
+function goOOPreview(){
+  if(!valFields([{id:'oo_firstName'},{id:'oo_lastName'},{id:'oo_email',email:true},{id:'oo_address'},{id:'oo_desc'},{id:'oo_amount',num:true}]))return;
+  buildOOPreview();hideAll();show('stepOO2');updateDots(2);window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function valFields(fields){let ok=true;fields.forEach(f=>{const el=document.getElementById(f.id),w=el.closest('.field');let pass=true;if(f.email)pass=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);else if(f.num)pass=+(el.value)>0;else pass=el.value.trim().length>0;if(!pass){w.classList.add('has-error');ok=false;}else{w.classList.remove('has-error');}});return ok;}
 
 function calculate(){
-  const hours=parseFloat(document.getElementById('hoursVal').value)||0,visits=parseInt(document.getElementById('visitsVal').value)||0;
-  const wasteOn=document.getElementById('wasteToggle').checked,roboOn=document.getElementById('roboToggle').checked,vatRate=admin.vat/100;
-  const gcAnnual=hours*visits*admin.rate,gcMonthly=gcAnnual/12;
-  const wasteAnnual=wasteOn?visits*admin.waste:0,wasteMonthly=wasteAnnual/12;
-  let roboPlanMonthly=0;const roboTier=document.getElementById('roboTier').value;
-  if(roboOn&&roboTier==='tier1')roboPlanMonthly=admin.tier1;if(roboOn&&roboTier==='tier2')roboPlanMonthly=admin.tier2;
-  const roboMachine=roboOn?(parseFloat(document.getElementById('roboCost').value)||0):0;
-  const roboInstallFee=roboOn?(parseFloat(document.getElementById('roboInstall').value)||admin.install):0;
-  const oneOffVal=parseFloat(document.getElementById('oneOffValue').value)||0,oneOffDesc=document.getElementById('oneOffDesc').value.trim(),oneOffActive=oneOffVal>0&&oneOffDesc.length>0;
-  const monthlyDD=gcMonthly+wasteMonthly+roboPlanMonthly;
-  const totalOneOff=(oneOffActive?oneOffVal:0)+roboMachine+roboInstallFee;
-  function wv(ex){return{ex,vat:ex*vatRate,inc:ex*(1+vatRate)};}
-  const modelSel=document.getElementById('roboModel');
-  const modelName=roboOn&&modelSel.value?'Segway Navimow '+modelSel.value:'';
-  return{gc:wv(gcMonthly),waste:wasteOn?wv(wasteMonthly):null,roboPlan:roboOn&&roboPlanMonthly>0?wv(roboPlanMonthly):null,monthlyDD:wv(monthlyDD),roboMachine:roboOn&&roboMachine>0?wv(roboMachine):null,roboInstall:roboOn&&roboInstallFee>0?wv(roboInstallFee):null,oneOff:oneOffActive?{...wv(oneOffVal),desc:oneOffDesc}:null,totalOneOff:totalOneOff>0?wv(totalOneOff):null,visits,wasteOn,roboOn,roboModel:modelName,roboTier};
+  const h=+(document.getElementById('hoursVal').value)||0,v=parseInt(document.getElementById('visitsVal').value)||0;
+  const wOn=document.getElementById('wasteToggle').checked,rOn=document.getElementById('roboToggle').checked,vr=admin.vat/100;
+  const gcM=(h*v*admin.rate)/12,wM=wOn?(v*admin.waste)/12:0;
+  let rpM=0;const rt=document.getElementById('roboTier').value;
+  if(rOn&&rt==='tier1')rpM=admin.tier1;if(rOn&&rt==='tier2')rpM=admin.tier2;
+  const rMach=rOn?(+(document.getElementById('roboCost').value)||0):0;
+  const rInst=rOn?(+(document.getElementById('roboInstall').value)||admin.install):0;
+  const ooV=+(document.getElementById('oneOffValue').value)||0,ooD=document.getElementById('oneOffDesc').value.trim(),ooA=ooV>0&&ooD.length>0;
+  const mDD=gcM+wM+rpM,tOO=(ooA?ooV:0)+rMach+rInst;
+  function wv(ex){return{ex,vat:ex*vr,inc:ex*(1+vr)};}
+  const ms=document.getElementById('roboModel'),mn=rOn&&ms.value?'Segway Navimow '+ms.value:'';
+  return{gc:wv(gcM),waste:wOn?wv(wM):null,roboPlan:rOn&&rpM>0?wv(rpM):null,monthlyDD:wv(mDD),roboMachine:rOn&&rMach>0?wv(rMach):null,roboInstall:rOn&&rInst>0?wv(rInst):null,oneOff:ooA?{...wv(ooV),desc:ooD}:null,totalOneOff:tOO>0?wv(tOO):null,visits:v,wasteOn:wOn,roboOn:rOn,roboModel:mn,roboTier:rt};
 }
-function getServices(){const inc=[],exc=[];SERVICES.forEach(s=>{const el=document.getElementById(s.id);if(el&&el.checked)inc.push(s.label);else exc.push(s.label);});return{included:inc,excluded:exc};}
-function getQuoteRef(){const sn=document.getElementById('lastName').value.trim().toUpperCase(),now=new Date(),ms=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];return`AGC-${sn}-${ms[now.getMonth()]}${String(now.getFullYear()).slice(-2)}`;}
-function getClientData(){const sr=document.getElementById('startDate').value;let sf='TBC';if(sr){const d=new Date(sr+'T00:00:00'),m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];sf=`${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}return{fullName:document.getElementById('firstName').value.trim()+' '+document.getElementById('lastName').value.trim(),email:document.getElementById('email').value.trim(),address:document.getElementById('address').value.trim(),startDate:sf,notes:document.getElementById('additionalNotes').value.trim()};}
+function getSvc(){const i=[],e=[];SERVICES.forEach(s=>{const el=document.getElementById(s.id);if(el&&el.checked)i.push(s.label);else e.push(s.label);});return{included:i,excluded:e};}
+function qRef(pre,lnId){const s=document.getElementById(lnId).value.trim().toUpperCase(),n=new Date(),ms=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];return`${pre}-${s}-${ms[n.getMonth()]}${String(n.getFullYear()).slice(-2)}`;}
 function todayF(){const d=new Date(),m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return`${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}
 function gbp(v){return'\u00A3'+v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+function nl2br(s){return s.replace(/\n/g,'<br>');}
 
 function buildPreview(){
-  const c=calculate(),svc=getServices(),cl=getClientData(),ref=getQuoteRef();let h='';
-
+  const c=calculate(),svc=getSvc(),ref=qRef('AGC','lastName');
+  const sr=document.getElementById('startDate').value;let sf='TBC';if(sr){const d=new Date(sr+'T00:00:00'),m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];sf=`${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}
+  const fn=document.getElementById('firstName').value.trim()+' '+document.getElementById('lastName').value.trim();
+  const em=document.getElementById('email').value.trim(),ad=document.getElementById('address').value.trim();
+  const notes=document.getElementById('additionalNotes').value.trim();
+  let h='';
   h+=`<div class="card" style="font-size:13px;color:#666;font-style:italic;border-left:3px solid #95c03d;padding:16px 20px;">Armstrong Garden Care delivers structured, professional maintenance programmes &mdash; designed around your garden, not a generic schedule. The following sets out your tailored service, what is and isn't included, and your monthly investment.</div>`;
-
-  h+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;"><div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Quote Reference</div><div style="font-size:20px;font-weight:800;color:var(--dark);">${ref}</div></div><div style="text-align:right;"><div style="font-size:11px;color:var(--text-muted);">Date: ${todayF()}</div><div style="font-size:11px;color:var(--text-muted);">Start: ${cl.startDate}</div></div></div><div style="margin-top:14px;"><div class="info-row"><span class="info-label">Client</span><span class="info-value">${cl.fullName}</span></div><div class="info-row"><span class="info-label">Address</span><span class="info-value">${cl.address}</span></div><div class="info-row"><span class="info-label">Email</span><span class="info-value">${cl.email}</span></div><div class="info-row"><span class="info-label">Visits per year</span><span class="info-value">${c.visits}</span></div><div class="info-row"><span class="info-label">On behalf of</span><span class="info-value">Owen Duddy</span></div></div></div>`;
-
+  h+=`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;"><div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Quote Reference</div><div style="font-size:20px;font-weight:800;color:var(--dark);">${ref}</div></div><div style="text-align:right;"><div style="font-size:11px;color:var(--text-muted);">Date: ${todayF()}</div><div style="font-size:11px;color:var(--text-muted);">Start: ${sf}</div></div></div><div style="margin-top:14px;"><div class="info-row"><span class="info-label">Client</span><span class="info-value">${fn}</span></div><div class="info-row"><span class="info-label">Address</span><span class="info-value">${ad}</span></div><div class="info-row"><span class="info-label">Email</span><span class="info-value">${em}</span></div><div class="info-row"><span class="info-label">Visits per year</span><span class="info-value">${c.visits}</span></div><div class="info-row"><span class="info-label">On behalf of</span><span class="info-value">Owen Duddy</span></div></div></div>`;
   h+=`<div class="card"><div class="card-title">Scope of Service</div><div class="scope-grid"><div class="scope-col scope-included"><h4>Included</h4>${svc.included.map(s=>`<div class="scope-item"><span class="tick">&#10003;</span> ${s}</div>`).join('')}</div><div class="scope-col scope-excluded"><h4>Not Included</h4>${svc.excluded.map(s=>`<div class="scope-item"><span class="cross">&#10007;</span> <span>${s}<span class="upsell">Available separately</span></span></div>`).join('')}</div></div></div>`;
-
   h+=`<div class="card"><div class="card-title">Monthly Direct Debit</div><table class="preview-table"><thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead><tbody><tr><td>Garden maintenance</td><td>${gbp(c.gc.ex)}</td><td>${gbp(c.gc.vat)}</td><td>${gbp(c.gc.inc)}</td></tr>`;
   if(c.waste)h+=`<tr><td>Waste removal</td><td>${gbp(c.waste.ex)}</td><td>${gbp(c.waste.vat)}</td><td>${gbp(c.waste.inc)}</td></tr>`;
   if(c.roboPlan)h+=`<tr><td>RoboScape service plan</td><td>${gbp(c.roboPlan.ex)}</td><td>${gbp(c.roboPlan.vat)}</td><td>${gbp(c.roboPlan.inc)}</td></tr>`;
   h+=`<tr class="total-row"><td>Total monthly DD</td><td>${gbp(c.monthlyDD.ex)}</td><td>${gbp(c.monthlyDD.vat)}</td><td>${gbp(c.monthlyDD.inc)}</td></tr></tbody></table></div>`;
-
-  if(c.totalOneOff){
-    h+=`<div class="card"><div class="card-title">One-Off Charges</div><table class="preview-table"><thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead><tbody>`;
-    if(c.roboMachine)h+=`<tr><td>${c.roboModel||'RoboScape machine'}</td><td>${gbp(c.roboMachine.ex)}</td><td>${gbp(c.roboMachine.vat)}</td><td>${gbp(c.roboMachine.inc)}</td></tr>`;
-    if(c.roboInstall)h+=`<tr><td>RoboScape installation</td><td>${gbp(c.roboInstall.ex)}</td><td>${gbp(c.roboInstall.vat)}</td><td>${gbp(c.roboInstall.inc)}</td></tr>`;
-    if(c.oneOff)h+=`<tr><td>${c.oneOff.desc}</td><td>${gbp(c.oneOff.ex)}</td><td>${gbp(c.oneOff.vat)}</td><td>${gbp(c.oneOff.inc)}</td></tr>`;
-    h+=`<tr class="total-row"><td>Total one-off</td><td>${gbp(c.totalOneOff.ex)}</td><td>${gbp(c.totalOneOff.vat)}</td><td>${gbp(c.totalOneOff.inc)}</td></tr></tbody></table><div style="font-size:11px;color:var(--text-muted);margin-top:8px;">One-off charges are payable on completion of works.</div></div>`;
-  }
-
-  if(cl.notes)h+=`<div class="card"><div class="card-title">Additional Notes</div><p style="font-size:14px;color:var(--text-light);">${cl.notes}</p></div>`;
-
+  if(c.totalOneOff){h+=`<div class="card"><div class="card-title">One-Off Charges</div><table class="preview-table"><thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead><tbody>`;if(c.roboMachine)h+=`<tr><td>${c.roboModel||'RoboScape machine'}</td><td>${gbp(c.roboMachine.ex)}</td><td>${gbp(c.roboMachine.vat)}</td><td>${gbp(c.roboMachine.inc)}</td></tr>`;if(c.roboInstall)h+=`<tr><td>RoboScape installation</td><td>${gbp(c.roboInstall.ex)}</td><td>${gbp(c.roboInstall.vat)}</td><td>${gbp(c.roboInstall.inc)}</td></tr>`;if(c.oneOff)h+=`<tr><td>${c.oneOff.desc}</td><td>${gbp(c.oneOff.ex)}</td><td>${gbp(c.oneOff.vat)}</td><td>${gbp(c.oneOff.inc)}</td></tr>`;h+=`<tr class="total-row"><td>Total one-off</td><td>${gbp(c.totalOneOff.ex)}</td><td>${gbp(c.totalOneOff.vat)}</td><td>${gbp(c.totalOneOff.inc)}</td></tr></tbody></table><div style="font-size:11px;color:var(--text-muted);margin-top:8px;">One-off charges are payable on completion of works.</div></div>`;}
+  if(notes)h+=`<div class="card"><div class="card-title">Additional Notes</div><p style="font-size:14px;color:var(--text-light);">${notes}</p></div>`;
   h+=`<div class="card"><div class="card-title">Terms &amp; Next Steps</div><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; This quote is valid for 30 days from the date above.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; Services are subject to a minimum 12-month agreement.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; Monthly payments are collected by Direct Debit.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; To accept this proposal, please contact Owen Duddy.</p></div>`;
-
   document.getElementById('previewContent').innerHTML=h;
 }
 
-function printPDF(){window.print();}
+function buildOOPreview(){
+  const vr=admin.vat/100;
+  const fn=document.getElementById('oo_firstName').value.trim()+' '+document.getElementById('oo_lastName').value.trim();
+  const em=document.getElementById('oo_email').value.trim(),ad=document.getElementById('oo_address').value.trim();
+  const desc=document.getElementById('oo_desc').value.trim(),amt=+(document.getElementById('oo_amount').value)||0;
+  const tl=document.getElementById('oo_timeline').value.trim(),notes=document.getElementById('oo_notes').value.trim();
+  const ref=qRef('AGC','oo_lastName'),vatAmt=amt*vr,inc=amt*(1+vr);
+  let h='';
+  h+=`<div class="card" style="font-size:13px;color:#666;font-style:italic;border-left:3px solid #95c03d;padding:16px 20px;">Armstrong Garden Care provides professional garden services across Edinburgh and the Lothians. Whether it's a one-off project or ongoing maintenance, we deliver quality workmanship with reliable, friendly service.</div>`;
+  h+=`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;"><div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Quote Reference</div><div style="font-size:20px;font-weight:800;color:var(--dark);">${ref}</div></div><div style="text-align:right;"><div style="font-size:11px;color:var(--text-muted);">Date: ${todayF()}</div></div></div><div style="margin-top:14px;"><div class="info-row"><span class="info-label">Client</span><span class="info-value">${fn}</span></div><div class="info-row"><span class="info-label">Address</span><span class="info-value">${ad}</span></div><div class="info-row"><span class="info-label">Email</span><span class="info-value">${em}</span></div><div class="info-row"><span class="info-label">On behalf of</span><span class="info-value">Owen Duddy</span></div></div></div>`;
+  h+=`<div class="card"><div class="card-title">Description of Works</div><p style="font-size:14px;color:var(--text);line-height:1.7;">${nl2br(desc)}</p>`;
+  if(tl)h+=`<div style="margin-top:12px;padding-top:10px;border-top:1px solid #f0f0f0;"><div class="info-row"><span class="info-label">Estimated completion</span><span class="info-value">${tl}</span></div></div>`;
+  h+=`</div>`;
+  h+=`<div class="card"><div class="card-title">Your Investment</div><table class="preview-table"><thead><tr><th>Item</th><th>Ex VAT</th><th>VAT</th><th>Inc VAT</th></tr></thead><tbody><tr class="total-row"><td>Total</td><td>${gbp(amt)}</td><td>${gbp(vatAmt)}</td><td>${gbp(inc)}</td></tr></tbody></table><div style="font-size:11px;color:var(--text-muted);margin-top:8px;">Payment is due on completion of works unless otherwise agreed.</div></div>`;
+  if(notes)h+=`<div class="card"><div class="card-title">Additional Notes</div><p style="font-size:14px;color:var(--text-light);">${notes}</p></div>`;
+  h+=`<div class="card"><div class="card-title">Terms &amp; Next Steps</div><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; This quote is valid for 30 days from the date above.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; Payment is due on completion unless otherwise agreed.</p><p style="font-size:13px;color:#777;margin:3px 0;">&#8226; To accept this quote, please contact Owen Duddy.</p></div>`;
+  h+=`<div class="card" style="background:var(--green-light);border:1px solid var(--green);"><div class="card-title" style="border-bottom-color:var(--green);">Looking for Regular Garden Maintenance?</div><p style="font-size:13px;color:var(--text);">Armstrong Garden Care offers structured monthly maintenance programmes tailored to your garden. Enjoy regular visits, professional care, and predictable monthly pricing by Direct Debit.</p><p style="font-size:13px;color:var(--green-dark);font-weight:600;margin-top:8px;">Ask Owen about our recurring maintenance plans.</p></div>`;
+  document.getElementById('ooPreview').innerHTML=h;
+}
+
+function doPrint(stepId){
+  document.getElementById(stepId).classList.add('print-target');
+  window.print();
+  // print-target class is fine to leave — it only matters during @media print
+}
 </script>
 </body>
 </html>
